@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    
+
+
+{% if user.is_authenticated %}   
+
+{% if following_communities.count %}
+<div class="containers  text-center  community-list-header " >
+    {{ "following communities" | lower | capfirst | title }}
+    
+    <div class="containers" style="width: 10em;margin: auto;">
+        <hr>
+    </div>
+</div>
+{% endif %}
+    
+
+{% include 'groups/_following-communities.html' %}
+
+<br>
+{% if non_following_communities.count %}
+ 
+<div class="container-fluid-nav text-center community-list-header" 
+    style="margin-top: -3%;"
+{% if not following_communities.count %}
+style="margin-top: -3%;"
+{% endif %} >
+    {{"Community Suggestions" | lower | capfirst | title }}
+
+    <div class="containers" style="width: 10em;margin: auto;">
+        <hr>
+    </div>  
+</div>
+
+{% include 'groups/_suggested_community.html' %}
+
+{% endif %}
+
+{% endif %}
+
+{% if not user.is_authenticated %}
+    <div class="">
+        {% include 'groups/_all-communities.html' %}
+    </div>
+{% endif %}
+
+
+
+
+{% if user.is_authenticated %}
+
+    <center>
+    
+        <div class="col mobile-br mt-5" style="display: none;margin-top: 15% !important;">
+            <a href="{% url 'create-community' %}"
+            class="btn btn-dark btn-md btn-rounded" 
+            style="font-size: .7em;padding: 4%;
+            padding-left: 7%;padding-right: 7%; text-transform: capitalize;">
+            <span class="mr-2"><i class="fa fa-plus-circle"></i></span>
+                {{"Create a new community" | lower | title}}
+            </a>
+            
+        </div> 
+        <br>
+    </center>
+
+{% endif %}
+
+<div class="col mb-4 mobile-br" style="display: none;">
+    <br>
+</div>
+
+
+
+
+<script>
+
+    // popovers initialization - on hover
+    $('[data-toggle="popover-hover"]').popover({
+        html: true,
+        trigger: 'hover',
+        placement: 'top',
+        content: function () { return'<p class="card-text text-center font-weight-bold" >'+
+                                     $(this).data('')+ '</p>' }
+    });
+
+
+</script>
+
+{% endblock content %}

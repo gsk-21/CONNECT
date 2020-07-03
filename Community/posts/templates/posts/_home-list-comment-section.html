@@ -1,0 +1,238 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+
+
+
+{% for comment in post.comments.all|slice:":1" %}
+
+<div class="card-body" style="margin-bottom: -2rem;">
+	<div class="home-comments-container">
+		<div class="media">
+
+			<a href="{% url 'about-user' comment.author.pk %}">
+				{% if comment.author.profile.profile_pic %}
+
+				<div style="background-image: url({{comment.author.profile.profile_pic.url}});"
+					class="cmt-author-profile-pic z-depth-1" alt="avatar image ">
+				</div>
+
+				{% else %}
+
+
+				<div class="cmt-author-no-profile-pic text-center z-depth-1">
+					<i class="fa fa-user" id="cmt-author-no-profile-pic"></i>
+				</div>
+
+				{% endif %}
+			</a>
+
+
+			<div class="media-body">
+
+				<a href="{% url 'about-user' comment.author.pk %}">
+					<h6 class="mt-0 list-comment-author" id="list-comment-author">
+						{{comment.author.first_name}}</h6>
+				</a>
+
+					<div class="comment-message">
+						{{ comment.comment}}
+					</div>
+					
+
+
+
+
+				<!-- ----------------- DATE ---------------------- -->
+
+				<p class="grey-text commented-on home-commented-on" id="commented-on"
+				 style="margin-top: 1%;font-size: .7rem;">
+					{{comment.commented_on  | naturaltime }}
+
+				</p>
+
+				<!-- ------------------ REPLY -------------------- -->
+				{% for reply in comment.replies.all|slice:":1" %}
+
+
+
+				<div class="media " style="margin-top: 1.5rem;">
+
+					<a href="{% url 'about-user' reply.user.pk %}">
+						{% if reply.user.profile.profile_pic %}
+
+						<div style="background-image: url({{reply.user.profile.profile_pic.url}});"
+							class="cmt-author-profile-pic" alt="avatar image ">
+						</div>
+
+						{% else %}
+
+						<div class="cmt-author-no-profile-pic text-center z-depth-1">
+							<i class="fa fa-user" id="cmt-author-no-profile-pic"></i>
+						</div>
+
+						{% endif %}
+					</a>
+
+
+					<div class="media-body">
+						<a href="{% url 'about-user' reply.user.pk %}">
+							<h6 class="mt-0 list-comment-author" id="list-comment-author">
+								{{reply.user.first_name}}</h6>
+						</a>
+						<div class="reply-message">
+							{{reply}}
+						</div>
+
+						<p class="grey-text" id="commented-on"
+						 style="margin-top: 1%;font-size: .7rem;">
+							{{ reply.replied_on  | naturaltime }}
+
+						</p>
+
+					</div>
+				</div>
+
+
+				{% endfor %}
+
+
+				{% if comment.replies.all.count > 1 %}
+
+				<div class="view-all-reply"  id="view-all-replies">
+					<a href="{% url 'post-detail' post.slug%}">
+						view all {{post.comments.all.count}} replies
+					</a>
+				</div>
+
+				{% endif %}
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+{% endfor %}
+
+
+{% if post.comments.all.count > 1 %}
+<div class="container " id="view-all-comments">
+	<div class="card-body ">
+		<a href="{% url 'post-detail' post.slug%}" class="view-all-comments">
+			view all {{post.comments.all.count}} comments
+		</a>
+	</div>
+</div>
+{% endif %}
+
+
+<div class="container see-hide-container" id="show-div-{{ post.slug }}" style="">
+	<div class="card-body">
+		<h6 class="font-weight-bold grey-text">
+			<a href="#" id="show-my-comments-{{post.slug}}" class="see-hide">See your comments</a>
+		</h6>
+	</div>
+</div>
+
+<div class="container see-hide-container" id="hide-div-{{ post.slug }}" style="margin-bottom: -2%;display: none;">
+	<div class="card-body">
+		<h6 class="font-weight-bold grey-text">
+			<a href="#" id="hide-my-comments-{{post.slug}}" class="see-hide">Hide your comments</a>
+		</h6>
+	</div>
+</div>
+
+
+
+<div class="post-list-my-comments " id="my-comments-{{ post.slug }}" style="display: none;margin-top: -5%;">
+
+	{% for comment in post.comments.all%}
+
+
+	{% if comment.author == user %}
+
+	<div class="card-body" style="margin-bottom: -1.3rem;">
+		<div class="container">
+			<div class="media">
+
+				<div class="media-body">
+
+					<span class="mt-0 font-weight-bold see-hide-author" style="margin-right: .4rem;">
+						{{comment.author.first_name}} </span>
+
+
+					<span class="black-text see-hide-comment-message">
+						{{ comment.comment | truncatewords:9 }}
+					</span>
+
+					<span class="grey-text" style="margin-top: 1%;font-size: .7rem;margin-left: .8rem;">
+						{{comment.commented_on  | shortnaturaltime }}
+					</span>
+
+
+					{% if comment.replies.all.count == 1 %}
+					<span class="grey-text" style="margin-top: 1%;font-size: .9rem;margin-left: .8rem;">
+						{{comment.replies.all.count }} reply
+					</span>
+
+					{% elif comment.replies.all.count > 1 %}
+
+					<span class="grey-text" style="margin-top: 1%;font-size: .9rem;margin-left: .8rem;">
+						{{comment.replies.all.count }} replies
+					</span>
+					{% endif %}
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+	{% endif %}
+
+
+	{% endfor %}
+
+</div>
+
+
+
+
+<script>
+
+	if (!document.querySelector('#my-comments-{{ post.slug }}').childElementCount) {
+		document.querySelector('#show-div-{{ post.slug }}').style.display = 'none'
+		document.querySelector('#hide-div-{{ post.slug }}').style.display = 'none'
+	}
+
+	document.querySelector('#show-my-comments-{{post.slug}}').addEventListener('click', function (event) {
+		event.preventDefault()
+
+
+
+		document.querySelector('#my-comments-{{ post.slug }}').style.display = 'block'
+		document.querySelector('#show-div-{{ post.slug }}').style.display = 'none'
+
+		document.querySelector('#hide-div-{{ post.slug }}').style.display = 'block'
+	})
+
+	document.querySelector('#hide-my-comments-{{post.slug}}').addEventListener('click', function (event) {
+		event.preventDefault()
+		document.querySelector('#my-comments-{{ post.slug }}').style.display = 'none'
+
+		document.querySelector('#show-div-{{ post.slug }}').style.display = 'block'
+		document.querySelector('#hide-div-{{ post.slug }}').style.display = 'none'
+	})
+
+</script>

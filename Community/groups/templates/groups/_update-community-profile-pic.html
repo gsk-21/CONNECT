@@ -1,0 +1,150 @@
+<div class="modal fade temp" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content card gradient-card z-depth-1"
+		 style="margin-top: 20%;border-radius: .5rem;">
+
+			<div class="modal-body mx-3">
+
+				<div class="md-form mb-5">
+					<center>	
+						<form action="{% url 'update-community-pic' %}" method="post" id="profile-pic-form"
+							enctype="multipart/form-data" style="display: none;">
+							{% csrf_token %}
+
+							<div class='file-input update-profile-img-btn'>
+
+
+								<input type='file' name="new-community-profile-pic"  required>
+								<span class=' btn btn-rounded btn-primary  edit-profile
+								font-weight-bold'>Choose new profile
+									image</span>
+								<span class='label file-selection' data-js-label>No file selected</span>
+								
+							</div>
+
+
+
+
+							
+							<input type="text" name="community-slug" hidden readonly value="{{ community.slug }}">
+
+							<br><br>
+							<button type="submit" id="select-img-button"
+								class="btn btn-rounded btn-primary  edit-profile font-weight-bold">
+								UPDATE
+							</button>
+							
+
+							{% if community.group_profile_pic  %}
+							<br><br>
+							<button class="btn btn-rounded btn-primary font-weight-bold  edit-profile" type="button"
+								onclick="cancel_update_profile_pic()">CANCEL</button>
+
+							{% else %}
+							<br><br>
+							<button class="btn btn-rounded btn-primary font-weight-bold  edit-profile" type="button"
+								onclick="cancel_set_profile_pic()">CANCEL</button>
+							{% endif %}
+
+						</form>
+					</center>
+				</div>
+
+				{% if community.group_profile_pic %}
+				<div class="md-form mb-5">
+					<center>
+						<button type="button" onclick="update_profile_pic();" id="select-img-button"
+							class="btn btn-rounded btn-primary font-weight-bold profile-pic-btn-update  edit-profile">
+							UPDATE COMMUNITY PROFILE PICTURE
+						</button>
+					</center>
+				</div>
+
+				<div class="md-form mb-4  profile-pic-btn-remove">
+					<center>
+						<a href="{% url 'remove-community-profile-pic' community.slug %}" 
+						class="btn btn-rounded btn-danger font-weight-bold  edit-profile">
+							REMOVE 
+						</a>
+					</center>
+					<br>
+				</div>
+
+				{% else %}
+
+				<div class="md-form mb-5">
+					<center>
+
+						<button type="button" onclick="set_profile_pic();"
+							class="btn btn-rounded btn-primary font-weight-bold
+							  edit-profile profile-pic-btn-set">
+							SET COMMUNITY PROFILE PICTURE
+						</button>
+
+					</center>
+
+				</div>
+
+				{% endif %}
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+
+<script>
+
+
+function update_profile_pic() {
+	document.querySelector("#profile-pic-form").style.display='block'
+	document.querySelector(".profile-pic-btn-remove").style.display = 'none'
+	document.querySelector(".profile-pic-btn-update").style.display = 'none'
+}
+
+
+function cancel_update_profile_pic() {
+	document.querySelector("#profile-pic-form").style.display = 'none'
+	document.querySelector(".profile-pic-btn-remove").style.display = 'inline'
+	document.querySelector(".profile-pic-btn-update").style.display = 'inline'
+}
+
+
+
+    var inputs = document.querySelectorAll('.file-input')
+
+    for (var i = 0, len = inputs.length; i < len; i++) {
+        customInput(inputs[i])
+    }
+
+    function customInput(el) {
+        const fileInput = el.querySelector('[type="file"]')
+        const label = el.querySelector('[data-js-label]')
+
+        fileInput.onchange =
+            fileInput.onmouseout = function () {
+                if (!fileInput.value) return
+
+                var value = fileInput.value.replace(/^.*[\\\/]/, '')
+                el.className += ' -chosen'
+                label.innerText = value
+            }
+    }
+
+
+    function set_profile_pic() {
+        document.querySelector(".profile-pic-btn-set").style.display = 'none'
+        document.querySelector("#profile-pic-form").style.display = 'block'
+    }
+
+
+    function cancel_set_profile_pic() {
+        document.querySelector("#profile-pic-form").style.display = 'none'
+        document.querySelector(".profile-pic-btn-set").style.display = 'inline'
+    }
+</script>

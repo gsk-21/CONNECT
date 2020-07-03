@@ -1,0 +1,84 @@
+
+
+<div class="community-list-container " id="community-list-container">
+
+	{% if communities.count == 1 %}
+	
+	<div class="container row row-cols-1 row-cols-md-2 col-md-12 single-community"  
+	id="single-community">
+	
+	{% elif communities.count == 2 %}
+	
+	<div class="container row row-cols-1 col-md-12 row-cols-md-2 community-full-width"
+	 style="margin: auto;width: 75%;">
+	
+	{% else %}
+	<div class="row row-cols-1 row-cols-md-3 ">
+	
+	{% endif %}
+	
+	{% for community in communities %}
+	
+					
+	{% if communities.count <= 2 %}
+		<div class="col mb-4  col-md-6 community-no-margin" style="margin: auto;">
+	{% elif communities.count == 3 %}
+
+		<div class="col mb-4  col-md-6 col-lg-4 community-no-margin" style="margin: auto;">
+
+	{% else %}
+		<div class="col-lg-4 col-md-6 " style="width: 100% !important;">
+	{% endif %}
+
+		<!-- Card -->
+		<div class="cards community-single ">
+
+			<!--Card image-->
+			<a href="{% url 'community-detail' community.slug %}">
+				
+
+					{% if community.group_profile_pic %}
+					<div class="img-round zoom">
+
+						<img class="card-img-top img-fluid " data-toggle="popover-hover"
+							data-="{{community.description | safe | striptags | title}}"
+							src="{{community.group_profile_pic.url}}" alt="Card image cap">
+					</div>
+					{% else %}
+
+					<div class="no-community-icon zoom z-depth-1-half hoverable"
+					data-toggle="popover-hover"
+					data-="{{community.description | safe | striptags | title}}">
+					
+						<i class="fa fa-users "  
+						id="community-icon" ></i>
+					</div>
+
+					{% endif %}
+
+				
+			</a>
+			<!--Card content-->
+			<div class="card-body ">
+
+				<!--Title-->
+				<h4 class="card-title text-center community-name">
+					{{community.name | safe | striptags | upper }}
+				</h4>
+				<!--Text-->
+				<!-- <p class="card-text text-center community-list-desc">
+				({{community.description | safe | striptags | title}})
+			</p> -->
+			</div>
+
+		</div>
+
+		<!-- Card -->
+	</div>
+
+
+				{% endfor %}
+
+		</div>
+</div>
+

@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+
+
+
+
+
+<div class="my-posts-single" style="">
+	<div class="row ">
+		<div class="col-lg-2  "></div>
+		
+		{% if not my_posts.count and not user.group_member.all.count %}
+			
+		<div class="col-lg-7 my-posts-left">
+
+		{% else %}
+
+		<div class="col-lg-6 my-posts-left">
+
+		{% endif %}
+			
+		
+
+
+			{% if not my_posts.count %}
+			<div class="container">
+				<div class="col mb-4 community-detail-post-card">
+					<div class="card bg-dark white-text text-center no-posts">
+						YOU HAVE NOT POSTED ANYTHING
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<div class="text-centers my-posts" >
+				{{"My Posts"}}
+			</div>
+
+			{% for post in my_posts %}
+
+			<div class="col mb-4 community-detail-post-card">
+				<!-- Card -->
+				<div class="card ">
+
+					<div class="card-body">
+						<p class="card-title posted-in text-center ">
+							Posted in <a href="{% url 'community-detail' post.group.slug %}">
+								{{post.group}}</a>
+
+							{% include 'posts/_delete-post.html' %}
+							
+
+							
+							{% if not post.post_pic %}
+								<hr>
+							{% endif %}
+								
+
+						</p>
+						<!-- <hr> -->
+
+					</div>
+					<!--Card image-->
+
+					{% if post.post_pic %}
+
+					<div class="containers view overlay" style="margin-top: -1rem;">
+
+						<img class="card-img-top card post-detail-image"
+							style="box-shadow: none;border-radius: .2rem;width: auto;height: auto;border-radius: 0px;"
+							src="{{post.post_pic.url}}" alt="Card image cap">
+
+						<a href="{% url 'post-detail' post.slug%}">
+							<div class="mask rgba-white-slight"></div>
+						</a>
+					</div>
+
+					{% include 'posts/_home-post-like.html' %}
+
+					{% endif %}
+
+					{% if not post.post_pic %}
+
+					<div class="card-body" style="margin-top: -2rem;">
+
+						{% else %}
+
+						<div class="card-body">
+
+							{% endif %}
+							<div class="post-card-content-container view overlay">
+								<a href="{% url 'post-detail' post.slug%}">
+									<p class="card-title post-title">{{post.title}}</p>
+								</a>
+								<!--Text-->
+
+								
+								<p class="card-text post-message " 
+								id="my-posts-message">{{post.message | truncatewords:100 }}</p>
+
+
+
+
+								<p class="card-text post-messages home-guest-posted-on grey-text " style="font-size: 1rem;">
+									{{ post.posted_on |naturalday }}
+
+								</p>
+
+								
+								{% if not post.post_pic %}
+
+								<div class=" home-like-container-no-pic" style="margin-left: -2.5%;">
+									{% include 'posts/_home-post-like.html' %}
+								</div>
+		
+								{% endif %}
+
+							</div>
+						</div>
+
+
+						<!-- -------- COMMENT SECTION ---------- -->
+						{% if post.comments.all.count %}
+						<div class="card-body comments-section-header community-detail-to-hide">
+							<h5 class="mt-0 font-weight-bold black-text comment-heading">COMMENTS</h5>
+						</div>
+
+						<div class="comment-section community-detail-to-hide" id="comment-section_{{post.slug}}">
+							{% include 'posts/_list-comment-section.html' %}
+							{% include 'posts/_comment-form.html' %}
+						</div>
+
+						{% else %}
+
+						<div class="bg-dangers community-detail-to-hide" style="margin-top: -5%;">
+							{% include 'posts/_comment-form.html' %}
+						</div>
+
+						{% endif %}
+
+
+
+						<!-- ------------------ COMMENT INPUT ------------------ -->
+
+					</div>
+					<!-- Card -->
+				</div>
+
+				{% endfor %}
+			</div>
+
+
+			<div class="col-md-4   ">
+				<div class="col-md-4 position-fixed my-posts-right" style="">
+
+
+					{% if my_posts.count %}
+					<div class="row">
+						<div class="col-md-8  text-center  my-posts-header">
+							You have posted <br>
+							<span class="my-posts-count">{{ my_posts.count }}</span>
+							post{{ my_posts.count | pluralize }} in
+							<a href="{% url 'communities' %}">
+								<span class="my-posts-count"> {{ posts_communities.count}} </span>
+
+								{% if posts_communities.count == 1 %}
+								community
+
+								{% elif posts_communities.count > 1 %}
+								communities
+
+								{% endif %}
+							</a>
+
+
+						</div>
+					</div>
+					{% endif %}
+
+					
+					<!-- ---------------------------- COMMUNITY LIST ---------------------------------------- -->
+
+					<div class="row ">
+						<div class="col-lg-10 d-none d-lg-block">
+
+
+							{% if user.group_member.all.count %}
+							<div class="  my-posts-following-posts-container ">
+
+								<div class=" my-posts-community-container">
+
+									<p class=" black-text  my-posts-community-heading">
+										Following Communities</p>
+
+								</div>
+
+								<div class="col-md-10   my-posts-community-container ">
+
+									{% for community in user.group_member.all|slice:":4" %}
+									<a href="{% url 'community-detail' community.slug %}">
+										<div class="container text-center my-posts-single-community bg-dangers"
+											style="margin: auto;">
+
+											<div class="media">
+
+												{% if community.group_profile_pic %}
+
+												<img src="{{ community.group_profile_pic.url }}"
+													class=" z-depth-1 my-posts-community-image" alt="avatar image"
+													style="background: none !important;">
+
+												{% else %}
+
+												<div class=" my-posts-no-community-icon ">
+													<i class="fa fa-users " id="my-posts-no-community-icon"></i>
+												</div>
+
+												{% endif %}
+
+												<h5 class="mt-0 my-posts-community-name">
+													{{community.name | title }}
+												</h5>
+
+											</div>
+
+										</div>
+									</a>
+									{% endfor %}
+
+
+								</div>
+
+
+								{% if user.group_member.all.count > 4 %}
+
+								<div class="my-posts-view-all " style="">
+									<a href="{% url 'following-communities' %}">
+										view all the {{user.group_member.all.count}} communities
+									</a>
+								</div>
+
+								{% endif %}
+
+							</div>
+							{% endif %}
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col mb-4 mobile-br" style="display: none;">
+		<br>
+    </div>
+	{% endblock content %}

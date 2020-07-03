@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<div class="wrapper mt-5">
+
+    <div class="profile-card js-profile-card">
+
+
+            <a href="#" data-toggle="modal" data-target="#modalLoginForm">
+
+                {% if about_user.profile.profile_pic %}
+                    <div class="text-center ">
+                        <img src="{{about_user.profile.profile_pic.url}}" 
+                        alt="profile card" class="z-depth-3 user-profile-image">
+                    </div>
+                {% else %}
+
+                    <div class="text-center user-profile-no-image z-depth-1">
+
+                            <span id="user-profile-no-image" class="mt-lg-5">
+                                <i class="fa fa-user" class="mt-lg-5"></i>
+                            </span>
+
+                    </div>
+
+                {% endif %}
+            </a>
+
+
+<!-- <br><br><br> -->
+
+<div class="col-lg-12 mb-5">
+<br>
+</div>
+
+        <div class="text-center profile-username font-weight-bold">
+            <div class="">@{{about_user}}
+            </div>
+
+        </div>
+        <div class="profile-card__cnt js-profile-cnt">
+            <div class="profile-card__name profile-user-first_name">{{about_user.first_name}}</div>
+
+            <div class="profile-card-inf profile-label-container">
+
+            <div class="profile-card-inf__item">
+                <div class="profile-card-inf__title profile-top-label" 
+                id="profile-top-label">{{created_communities}}</div>
+                
+                {% if created_communities %}
+                    
+                <a href="{% url 'user-created-community' about_user.pk %}" >
+                    <div class="profile-card-inf__txt profile-bottom-label"
+                    id="profile-bottom-label">
+                        Created Communities</div>
+                </a>   
+
+                {% else %}
+
+                <span>
+                    <div class="profile-card-inf__txt profile-bottom-label"
+                    id="profile-bottom-label">
+                        Created Communities</div>
+                </span>  
+
+                {% endif %}
+                    
+
+
+             </div>
+
+
+
+
+            <div class="profile-card-inf__item">
+                 <div class="profile-card-inf__title profile-top-label" 
+                 id="profile-top-label">{{my_posts.count}}</div>
+                 <span href="{% url 'my-posts' %}">
+                    <div class="profile-card-inf__txt profile-bottom-label"
+                    id="profile-bottom-label" >
+                        Posts</div>
+                 </span>
+            </div>
+
+            <div class="profile-card-inf__item">
+                <div class="profile-card-inf__title profile-top-label"
+                id="profile-top-label">{{following_communities}}</div>
+
+                    
+                    {% if following_communities %}
+                        
+                    <a href="{% url 'user-following-community' about_user.pk %}">
+                        <div class="profile-card-inf__txt profile-bottom-label"
+                        id="profile-bottom-label">
+                            Following Communities</div>
+                    </a>
+
+                    {% else %}
+
+                    <span>
+                        <div class="profile-card-inf__txt profile-bottom-label"
+                        id="profile-bottom-label">
+                            Following Communities</div>
+                    </span>
+
+                    {% endif %}
+                        
+
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="other-posts-from-user" style="margin-top: 0%;">
+
+	<div class="col mb-4 col-md-12">
+        <p class="other-posts-header " style="margin-left: -2% !important;">
+             Posts by {{about_user.first_name}}
+		</p>
+	</div>
+		<hr>
+</div>
+
+
+{% include 'posts/_my-posts.html' %}
+
+<div class="col mb-4 mobile-br" style="display: none;">
+    <br>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <div class="container mt-lg-3">
+
+        <div class="container " style="width: 75%;margin: auto;" id="create-head-full">
+            <div class="container" style="margin: auto;">
+                <p class="create-community-head" id="create-community-head">
+                    POSTING ON {{group_name}}</p>
+            
+            </div>
+        
+        <hr><br>
+        <br>
+    </div>
+
+    
+    <form action="{% url 'create-post'  %}"  method="post" enctype="multipart/form-data">
+    
+    {% csrf_token %}
+    
+    <input type="text" hidden readonly name="group-slug" value="{{group_slug}}"> 
+    
+        <div class="containers bg-successs create-community-container" 
+        style="width: 80%; margin: auto;">
+    
+            <div class="row">
+        
+                <div class="col-md-12 col-lg-6" style="margin-top: -3%;">
+                        
+                    <div class="row">
+                        <div class="col-md-10" style="margin: auto;">
+                            <div class="container">
+                                <label for="image">
+            
+                                    <input type="file" name="post_pic"
+                                     id="image" style="display:none;" 
+                                    onchange="preview()" />
+                
+                                     <div class="" >
+                                        
+                                        <img src="" style="display: none;"
+                                        id="frame" class=" img-fluid post-creation-image"
+                                        title="Choose Image">
+                                    </div> 
+                
+                                    <div class="container">
+                                        <i class="fa fa-picture-o community-creation-profile-icon "  
+                                            id="post-icon" title="Post Image"
+                                            aria-hidden="true" style=""></i>
+                                    </div>
+                
+                                </label>
+                                
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+        
+        
+                <div class="col-md-12 col-lg-6" >
+        
+    
+    
+                    <div class="md-form mb-6">
+        
+                        <input type="text" id="orangeForm-name" placeholder="Post Title"
+                        style="font-size: 1.2rem;color: black !important;"
+                        class="form-control validate black-text create-post-input"
+                        name="post-title" required >
+                        <!-- <label data-error="wrong" data-success="right" for="orangeForm-name" 
+                        id="create-community-label"
+                        class="create-community-label" >
+                            POST TITLE</label> -->
+                    </div>
+        
+                    <div class="col-md-1"><br></div>
+    
+        
+                    <div class="md-form mb-6">
+                        <div class="md-form amber-textarea active-amber-textarea " 
+                        >
+
+                            <textarea id="form19"  name="post-message" 
+                            style="font-size: 1.2rem;color: black !important;"
+                            placeholder="Write Something"
+                            class="md-textarea form-control black-text  create-post-input"
+                             rows="2" style="overflow: auto;"></textarea>
+                            <!-- <label for="form19 " id="create-community-label"
+                             class="create-community-label">
+                                WRITE SOMETHING</label> -->
+
+                          </div>
+        
+                    </div>
+                    
+                    <div class="md-form mb-6" style="margin-top: 10%;">
+    
+                        <div class="container  text-right" >
+                            <button type="submit" 
+                            class="btn btn-dark btn-rounded 
+                            font-weight-bold btn-md create-community-btn" 
+                            id="create-community-btn">
+                                POST
+                            </button>
+                        </div>
+    
+                    </div>
+    
+        
+                </div>
+        
+        
+            </div>
+        
+        </div>
+    
+    
+    
+    </form>
+    
+    
+
+</div>
+
+
+<div class="col mb-4 mobile-br" style="display: none;">
+    <br><br>
+</div>
+
+<script>
+
+		function preview() {
+			frame.src = URL.createObjectURL(event.target.files[0]);
+			document.querySelector("#post-icon").style.display = 'none'
+			document.querySelector("#frame").style.display = 'block'
+		}
+
+        window.addEventListener('load',function(){
+
+            document.querySelector("textarea").value=''
+            document.querySelector("#orangeForm-name").value=''
+
+        })
+
+</script>
+
+{% endblock content %}

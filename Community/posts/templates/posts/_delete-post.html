@@ -1,0 +1,43 @@
+<a href="#" 
+class="delete-post-{{post.slug}}"><span class="float-right del-btn">
+  <i class="fa fa-trash" aria-hidden="true"></i>
+</span></a>
+
+
+
+
+<script>
+
+document.querySelector('.delete-post-{{post.slug}}').addEventListener('click',function(event){
+        console.log(this)
+        
+        event.preventDefault()
+        var post_slug = "{{post.slug}}"
+        delete_post(post_slug)
+})
+    
+function delete_post(post_slug){
+    $.ajax(
+        {
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url:"{% url 'delete-post'  %}",
+            method:"POST",
+            type:"POST",
+            data:{
+                post_slug:post_slug,
+            },
+			success: function () {
+				location.reload()
+			},
+			error: function (xhr, errmsg, err) {
+				console.log("Error!")
+				console.log(xhr.status + ":" + xhr.responseText)
+			}
+
+        },
+
+    )
+}
+    
+</script>
+    

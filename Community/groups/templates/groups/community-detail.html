@@ -1,0 +1,596 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load customfilter %}
+
+{% block content %}
+
+
+
+<div class="community-detail-container">
+    <div class="row ">
+
+        <div class="col-lg-9  col-md-12 " style="margin: auto;">
+
+            <!-- -------------------------- TOP ------------------------------ -->
+
+            <div class="row community-detail-top ">
+                <!-- col-lg-6 col-md-10 -->
+
+                <div class="col-lg-4 col-md-4  col-sm-6 ">
+
+                    <div class="containers">
+
+                        <a href="#" data-toggle="modal" data-target="#modalLoginForm">
+                            {% if community.group_profile_pic %}
+                            <div class="img-round zoom z-depth-1-half">
+
+                                <img class="card-img-tops img-fluid " src="{{community.group_profile_pic.url}}"
+                                    alt="Card image cap" style="">
+
+                            </div>
+                            {% else %}
+
+                            <div class="no-community-icon zoom z-depth-1-half hoverable">
+                                <i class="fa fa-users " id="community-icon"></i>
+                            </div>
+
+                            {% endif %}
+                        </a>
+
+
+                    </div>
+                    <div class="col-md d-none d-lg-block"><br></div>
+                </div>
+
+
+
+                <div class="col-lg-8 col-md-8 ">
+                    <div class="container">
+                        <!-- <div class="col-md"><br></div> -->
+                        <div class="row">
+
+                            <div class="col-md-12 text-centers   community-detail-row0">
+                                {{community |striptags |safe|upper }}
+
+                                {% if user not in community.members.all%}
+                                <div class="join-leave-container">
+                                    <a href="{% url 'join-community' slug=community.slug %}"
+                                        class="btn btn-rounded btn-dark  join-leave btn-md">Join Community</a>
+                                </div>
+
+                                {% else %}
+                                <div class="join-leave-container " style="">
+                                    <a href="{% url 'exit-community' slug=community.slug %}"
+                                        class="btn btn-rounded btn-dark join-leave btn-md">Leave Community</a>
+                                </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md  d-lg-block community-detail-to-hide"><br></div>
+
+                        <div class="row ">
+
+                            <div class="col-md-12 text-centers community-detail-row1 ">
+
+                                {{ community.description |striptags |safe |lower |capfirst   }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md d-lg-block community-detail-to-hide"><br></div>
+
+                        <div class="row ">
+
+                            <div class="col-md-12  community-detail-row2">
+
+                                <span class="com-posts ">
+
+                                    <span class="com-count "> {{community.posts.count}} </span>
+                                    Post{{community.posts.count|pluralize}}
+                                </span>
+
+                                <span class="com-members">
+
+                                    <span class="com-count"> {{community.members.all.count}} </span>
+                                    Member{{community.members.all.count|pluralize}}
+                                    <!-- <i class="fa fa-users" aria-hidden="true"></i> -->
+                                </span>
+
+
+                            </div>
+
+                        </div>
+
+
+                        {% if user in community.members.all%}
+                        <div class="col-md d-lg-block community-detail-to-hide"><br></div>
+
+                        <div class="row ">
+
+                            <div class="col-md-12    community-detail-row2 community-detail-info">
+
+                                <a href="{% url 'create-post' %}?slug={{community.slug }}" class="post-something">
+
+                                    Share something in this community
+                                    <i class="fas fa-paper-plane"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="col-md d-lg-block community-detail-to-hide"><br></div>
+
+                        <div class="row ">
+
+                            <div class="col-md-12   community-detail-row2 community-detail-info">
+
+                                    Join to view all the posts and their comments
+                                    and to share something in this community
+
+                            </div>
+
+                        </div>
+
+
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ------------------------- BOTTOM ----------------------- -->
+
+            <div class="row community-detail-posts" id="community-detail-posts">
+
+
+                <div class="col-lg-10 col-md-12 " style="margin: auto;width: 100%;">
+
+
+                        {% if user in community.members.all%}
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 ">
+                                <div class="row">
+                                {% for post  in community.posts.all %}
+
+                                
+    
+                                    <div class="col-lg-12 mb-4  col-md-12 community-detail-post-card">
+                                        <!-- Card -->
+                                        <div class="card ">
+        
+                                            <div class="card-body " style="margin-top: -.3rem;">
+        
+                                                    <div class="media ">
+
+                                                        {% if post.author.profile.profile_pic %}
+
+                                                        <div style="background-image: url({{post.author.profile.profile_pic.url}});"
+                                                            class="community-detail-rnd-img z-depth-1" alt="avatar image ">
+                                                        </div>
+        
+                                                        {% else %}
+
+                                                        <div class="post-list-no-user-image text-center z-depth-1">
+                                                            <i class="fa fa-user" id="post-list-no-user-image"></i>
+                                                        </div>
+
+                                                        {% endif %}
+
+                                                        <h5 class="mt-0  black-text community-detail-post-author">
+                                                            {{post.author.first_name | upper}}</h5>
+        
+                                                    </div>
+                                         
+
+                                            </div>
+        
+                                            <!--Card image-->
+        
+                                            {% if post.post_pic %}
+        
+                                            <div class="containers view overlay" style="">
+        
+                                                <img class="card-img-top card post-detail-image community-detail-post-image"
+                                                    style="" id="community-detail-post-image"
+                                                    src="{{post.post_pic.url}}" alt="Card image cap">
+                                                <a href="{% url 'post-detail' post.slug%}">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </a>
+                                            </div>
+
+
+                                            <div class="community-detail-likes">
+                                                
+                                                {% include 'posts/_home-post-like.html' %}
+                                            </div>
+                                            
+                                            {% endif %}
+        
+                                            <div class="card-body">
+                                                {% if post.post_pic %}
+                                                <div class="post-card-content-containers view overlay bg-dangers"
+                                                    style="margin-top:-3%">
+                                                {% else %}
+                                                <div class="post-card-content-containers view overlay bg-dangers"
+                                                        style="margin-top:-4%">
+                                                {% endif %}
+        
+                                                        <a href="{% url 'post-detail' post.slug%}">
+                                                            <p class="card-title 
+                                                             post-title">{{post.title}}</p>
+                                                        </a>
+                                                        <!--Text-->
+        
+                                     
+                                                        <p class="card-text post-message community-detail-post-message" 
+                                                        id="home-post-message">{{post.message}}</p>
+
+        
+                                                        <div class="home-guest-posted-on grey-text mt-0">
+                                                            {{post.posted_on | naturalday}}
+                                                        </div>
+                                                        {% if not post.post_pic %}
+        
+                                                        <div class="bg-successs 
+                                                        community-detail-no-postpic-like" style="margin-left: -2.5%;">
+                                                            {% include 'posts/_home-post-like.html' %}
+                                                        </div>
+        
+                                                        {% endif %}
+        
+                                                    </div>
+                                                </div>
+        
+                                                <!-- -------- COMMENT SECTION ---------- -->
+                                                {% if post.comments.all.count %}
+                                                <div class="card-body comments-section-header community-detail-to-hide">
+                                                    <h5 class="mt-0 font-weight-bold black-text comment-heading">COMMENTS</h5>
+                                                </div>
+                                                {% endif %}
+                                                <div class="comment-section community-detail-to-hide" id="comment-section_{{post.slug}}">
+                                                    {% include 'posts/_list-comment-section.html' %}
+                                                </div>
+        
+                                                <!-- ------------------ COMMENT INPUT ------------------ -->
+        
+                                                <div class="bg-dangers community-detail-to-hide" style="margin-top: -2%;">
+                                                    {% include 'posts/_comment-form.html' %}
+                                                </div>
+        
+                                            </div>
+                                            <!-- Card -->
+                                        </div>
+                                
+
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </div>
+
+
+
+                            {% else %}
+
+                            {% for post  in community.posts.all|slice:"0:3" %}
+
+
+                            <div class="col mb-4 community-detail-post-card">
+                                <!-- Card -->
+                                <div class="card ">
+
+                                    <div class="card-body" style="margin-top: -.3rem;">
+
+                                        <!--Title-->
+                                        {% if post.author.profile.profile_pic %}
+
+                                        <div class="containers">
+                                            <div class="media ">
+                                                <div style="background-image: url({{post.author.profile.profile_pic.url}});"
+                                                    class="community-detail-rnd-img z-depth-1" alt="avatar image ">
+                                                </div>
+
+                                                <h5 class="mt-0  black-text community-detail-post-author">
+                                                    {{post.author.first_name}}</h5>
+
+                                            </div>
+                                        </div>
+
+                                        {% else %}
+                                        <div class="containers">
+                                            <div class="media ">
+
+                                                <div class="post-list-no-user-image text-center z-depth-1">
+                                                    <i class="fa fa-user" id="post-list-no-user-image"></i>
+                                                </div>
+
+                                                <h5 class="mt-0  black-text community-detail-post-author">
+                                                    {{post.author.first_name}}</h5>
+
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <!--Card image-->
+
+                                    {% if post.post_pic %}
+
+                                    <div class="containers view overlay" style="">
+
+                                        <img class="card-img-top card post-detail-image"
+                                            style="box-shadow: none;border-radius: 2px;width: auto;height: auto;"
+                                            src="{{post.post_pic.url}}" alt="Card image cap">
+                                       
+                                    </div>
+
+
+                                    <div class="community-detail-likes">
+                                                
+                                        {% include 'posts/_home-post-like.html' %}
+                                    </div>
+
+                                    {% endif %}
+
+                                    <div class="card-body">
+                                        {% if post.post_pic %}
+                                        <div class="post-card-content-container view overlay bg-dangers"
+                                            style="margin-top:-3%">
+                                            {% else %}
+                                            <div class="post-card-content-container view overlay bg-dangers"
+                                                style="margin-top:-4%">
+                                                {% endif %}
+
+                                               
+                                                    <p class="card-title post-title">{{post.title}}</p>
+
+                                                <!--Text-->
+
+                                                <p class="card-text post-message community-detail-post-message" 
+                                                id="home-post-message">{{post.message}}</p>
+
+
+                                            </div>
+                                            <div class="home-guest-posted-on grey-text mt-2">
+                                                {{post.posted_on | naturalday}}
+                                            </div>
+                                        </div>
+
+                                        <!-- -------- COMMENT SECTION ---------- -->
+                                        {% if post.comments.all.count %}
+                                        <div class="card-body comments-section-header">
+                                            <h5 class="mt-0 font-weight-bold black-text comment-heading">
+                                                {{post.comments.all.count}} COMMENT{{post.comments.all.count | pluralize | upper}}</h5>
+
+                                            </div>
+                                        
+                                        {% endif %}
+
+
+                                        {% if not post.post_pic %}
+        
+                                        <div class="bg-successs 
+                                        community-detail-no-postpic-like" style="margin-left: 1%;margin-top: -2%;margin-bottom: 2%;">
+                                            {% include 'posts/_home-post-like.html' %}
+                                        </div>
+
+                                        {% endif %}
+                                        
+                                    </div>
+
+                                    <div class="col mb-2" ></div>
+                                    <!-- Card -->
+                                </div>
+
+                                {% endfor %}
+
+                                
+                                {% if community.posts.all.count > 3 %}
+                                <div class="text-center grey-text font-weight-bold " 
+                                 id="join-text" style="margin-top: -5%;">
+                                 <br>
+                                    Join this community to view {{community.posts.all.count | sub1 }} more
+                                     post{{community.posts.all.count | sub1 | pluralize}}
+                                </div>
+                                <br>  
+                                {% endif %}
+                                    
+
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+            <!-- ------------------ RIGHT --------------- -->
+
+            <div class="col-md-3 d-none d-lg-block  community-detail-right bg-successs">
+                <div class="col-md-3 position-fixed bg-dangers">
+
+                    <div class="row">
+
+                        <div class="col-md-10 bg-successs text-centers">
+                            {% if community.created_by == user %}
+                            <p class="community-created-on-you">
+                                Community created by you on <br>
+                                <span
+                                    class="community-created-date-you">{{ community.created_on | date:"d M Y" }}</span>
+                            </p>
+
+                            {% else %}
+                            <p class="community-created-on">
+                                <span class="font-weight-bold">
+                                    <a href="{% url 'about-user' community.created_by.pk %}">
+                                        {{ community.created_by.first_name | title }}
+                                    </a>
+                                </span> created this
+                                Community on <br>
+                                <span class="community-created-date">{{ community.created_on | date:"d M Y" }}</span>
+                            </p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+
+                    {% if community.created_by != user %}
+
+
+                    <div class="row bg-dangers">
+                        <div class="col-md-1 "></div>
+                        <div class="col-md-6 ">
+
+                            <a href="{% url 'about-user' community.created_by.pk %}">
+
+                                <div class=" community-created-user-image-container">
+
+
+                                    {% if community.created_by.profile.profile_pic %}
+                                    <div class="community-created-user-image z-depth-1-half zoom hoverable">
+                                        <img src="{{community.created_by.profile.profile_pic.url}}"
+                                            class="avatar z-depth-1-half" alt="avatar image">
+                                    </div>
+
+                                    {% else %}
+
+                                    <div class="no-community-icon z-depth-1 ">
+                                        <i class="fa fa-user " id="community-detail-user-icon"></i>
+                                    </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </a>
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-9 font-weight-bold  created-by">
+                                    <a href="{% url 'about-user' community.created_by.pk %}">Admin</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    {% endif %}
+
+                    {% if community.created_by == user %}
+
+                    <div class="row">
+                        <div class="col-md-9 delete-community-container">
+                            <a href="{% url 'delete-community' community.slug %}" class=" delete-community">
+                                <i class="fa fa-trash"></i> {{ "Delete Community"  }}
+                            </a>
+
+                        </div>
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ---------------------------- MEMBER LIST ---------------------------------------- -->
+
+
+                    {% if community.members.all.count %}
+
+                    <div class="row containers   ">
+
+                        <div class="col-md-12">
+                            <div class="community-member-heading">
+                                {{ "Community Members" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="row containers  community-member-container">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+
+                            {% for member in community.members.all %}
+                            <a href="{% url 'about-user' member.pk %}">
+                                <div class="container text-center community-detail-single-member ">
+
+                                    <div class="media">
+
+                                        {% if member.profile.profile_pic %}
+
+                                        <img src="{{ member.profile.profile_pic.url }}"
+                                            class=" z-depth-1 community-detail-single-member-image" alt="avatar image"
+                                            style="background: none !important;">
+
+                                        {% else %}
+
+                                        <div class=" community-detail-single-member-no-image-icon ">
+                                            <i class="fa fa-user "
+                                                id="community-detail-single-member-no-image-icon"></i>
+                                        </div>
+
+                                        {% endif %}
+
+                                        <h5 class="mt-0 community-detail-single-member-user-name">
+                                            {{ member.first_name | first_name | upper | truncatechars:14}}
+                                        </h5>
+
+                                    </div>
+
+                                </div>
+                            </a>
+                            {% endfor %}
+
+
+
+                        </div>
+                    </div>
+
+                    {% if community.members.all.count > 4 %}
+                    <div class="row scroll-to-view ">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 ">
+                            <p class="view-all grey-text">
+                                Scroll to view all the {{community.members.all.count}} members</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    {% include 'groups/_update-community-profile-pic.html' %}
+
+
+    
+    <div class="col mb-4 mobile-br" style="display: none;">
+        <br><br>
+    </div>
+
+
+    {% endblock content %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<!--Main Navigation-->
+
+
+{% if following_communities %}
+<div class="container  text-center  community-list-header " style="font-weight: 600;">
+    {{ "Following COMMUNITIES" | lower | capfirst | title }}
+    
+    <div class="containers" style="width: 10em;margin: auto;">
+        <hr>
+    </div>
+    </div>
+
+{% else %}
+
+
+<div class="container-fluid-nav text-center font-weight-bold community-list-header">
+	<br><br><br>
+	YOU ARE NOT FOLLOWING <br> ANY COMMUNITIES
+</div>
+
+{% endif %}
+	
+
+
+<div class="container text-center ">
+	<div style="margin-right: 10% !important;">
+		<p class="h4 font-weight-bold "></p>
+	</div>
+</div>
+
+{% include 'groups/_following-communities.html' %}
+
+
+<div class="col mb-4 mobile-br" style="display: none;">
+	<br><br>
+</div>
+
+<script>
+
+			// popovers initialization - on hover
+	$('[data-toggle="popover-hover"]').popover({
+		html: true,
+		trigger: 'hover',
+		placement: 'top',
+		content: function () {
+			return '<p class="card-text text-center font-weight-bold" >' +
+				$(this).data('') + '</p>'
+		}
+	});
+
+
+</script>
+
+{% endblock content %}

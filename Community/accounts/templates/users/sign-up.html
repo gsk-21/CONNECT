@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+
+<!--Modal: Login / Register Form-->
+<!-- Modal -->
+<!-- Modal -->
+<div class="community-detail-to-hide">
+	<form action="" method="post">
+		{% csrf_token %}
+			<div class="modal-dialog modal-md " role="document" >
+				<!--Content-->
+				<div class="modal-content form-elegant form-block">
+					<!--Header-->
+					<div class=" text-center">
+						<h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" 
+						id="myModalLabel">
+							<strong><i class="fas fa-user-plus mr-1"></i>
+								Register</a></strong></h3>
+			
+					</div>
+					<!--Body-->
+					<div class="container text-center">
+						{% if error %}
+						<div class="badge badge-pill  badge-danger " style="font-size: 1.2rem;">
+							{{ error }}
+						</div>
+						{% endif %}
+					</div>
+			
+					<!--Body-->
+					<div class="container">
+						<div class="modal-body">
+			
+							<div class="md-form mb-5">
+								<i class="fas fa-user prefix grey-texts "></i>
+								<input type="text" id="orangeForm-name" class="form-control validate" name="username"
+									value="{{username}}" required>
+								<label data-error="wrong" data-success="right" for="orangeForm-name">Username</label>
+							</div>
+			
+							<div class="md-form mb-5">
+								<i class="fas fa-user prefix grey-texts "></i>
+								<input type="text" id="orangeForm-name" class="form-control validate" name="name" 
+								value="{{name}}" required>
+								<label data-error="wrong" data-success="right" for="orangeForm-name">Your name</label>
+							</div>
+	
+							<div class="md-form mb-5">
+								<i class="fas fa-envelope prefix grey-texts"></i>
+								<input type="email" id="orangeForm-email" class="form-control validate" name="email"
+									value="{{email}}" required>
+								<label data-error="wrong" data-success="right" for="orangeForm-email">Your email</label>
+							</div>
+			
+							<div class="md-form mb-4">
+								<i class="fas fa-lock prefix grey-texts"></i>
+								<input type="password" id="orangeForm-pass" class="form-control validate" 
+								name="password" required>
+								<label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
+							</div>
+			
+							<div class="md-form mb-4">
+								<i class="fas fa-lock prefix grey-texts"></i>
+								<input type="password" id="orangeForm-pass" class="form-control validate"
+								 name="confirm-password" required>
+								<label data-error="wrong" data-success="right" for="orangeForm-pass">Repeat password</label>
+							</div>
+			
+							<div class="text-center form-sm mt-2">
+								<button class="btn btn-dark btn-rounded btn-signup"> Sign up </button>
+							</div>
+			
+						</div>
+					</div>
+				<div class="container">
+				<p class="pt-1  text-center">Already have an account? 
+					 <a href="{% url 'login' %}" class="blue-text already-sign">Sign In</a> </p>
+				</div>
+				<br>
+					<!--Footer-->
+					<!-- <div class="modal-footer no-line">
+							<div class="options text-right">
+								<p class="pt-1">Already have an account? <a href="#" class="blue-text">Log In</a></p>
+							</div>
+							
+						</div> -->
+			
+				</div>
+				<!--/.Content-->
+			</div>
+	</form>
+</div>
+
+
+
+<div class="mobile-br mt-4 black-text " style="display: none;">
+
+
+	<form action="" method="post">
+		{% csrf_token %}
+
+		<div class=" z-depth-3" style="width: 90%;margin: auto;border-radius: .5em;">
+
+				<!--Content-->
+			<br>
+					<!--Header-->
+					<div class=" text-center ">
+						<h3 class="font-weight-bold " 
+						id="myModalLabel" style="font-size: 1.2em;">
+							<strong ><i class="fas fa-user-plus mr-1" ></i>
+								Register</a></strong></h3>
+			
+					</div>
+					<!--Body-->
+					<div class="container text-center mt-5" >
+						{% if error %}
+						<div class="alert alert-danger bg-danger card text-white" 
+						style="font-size: .8em;width: 100% !important;margin: auto !important;height: auto !important;overflow: visible;">
+							{{ error }}
+						</div>
+						{% endif %}
+					</div>
+			
+					<!--Body-->
+					<div class="container">
+						<div class="modal-body">
+			
+							<div class="md-form mb-5">
+
+								<input type="text" id="orangeForm-name" 
+								class="form-control validate create-post-input black-text" name="username" placeholder="Username"
+									value="{{username}}" required>
+
+							</div>
+			
+							<div class="md-form mb-5">
+
+								<input type="text" id="orangeForm-name" 
+								class="form-control validate black-text" name="name" 
+								placeholder="Your Name" value="{{name}}" required>
+
+							</div>
+	
+							<div class="md-form mb-5">
+
+								<input type="email" id="orangeForm-name" 
+								class="form-control validate black-text" name="email"
+									value="{{email}}" placeholder="Your Email" required>
+
+							</div>
+			
+							<div class="md-form mb-4">
+
+								<input type="password" id="orangeForm-pass" 
+								class="form-control validate black-text" 
+								name="password" required placeholder="Your Password">
+
+							</div>
+			
+							<div class="md-form mb-4">
+
+								<input type="password" id="orangeForm-pass" 
+								class="form-control validate black-text"
+								 name="confirm-password" required placeholder="Repeat Password">
+
+							</div>
+			
+							<div class="text-center form-sm mt-5" style="margin-top: 15% !important;">
+								<button class="btn btn-dark btn-rounded btn-signup" 
+								id="create-community-btn" style="margin: auto !important; width: 10em !important;"> Sign up </button>
+							</div>
+			
+						</div>
+					</div>
+				<div class="container mt-5" style="font-size: .8em;">
+				<p class="pt-1  text-center">Already have an account? <br>
+					 <a href="{% url 'login' %}" class="blue-text already-sign">Sign In</a> </p>
+				</div>
+
+
+<br>
+
+
+		</div>
+		<br>
+	</form>
+
+
+</div>
+
+<div class="col mb-4 mobile-br" style="display: none;">
+    <br>
+</div>
+
+{% endblock content %}

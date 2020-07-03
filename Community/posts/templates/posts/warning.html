@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<center>
+
+<br><br><br>
+
+    <div class="container">
+        <div class="card bg-dark pt-5 pb-5 text-white resp pl-5
+        pr-5" style="width: 60%;margin: auto;">
+
+            <span>   JOIN 
+                <a href="{% url 'community-detail' post.group.slug %}" 
+                class="text-white warning-link" >{{ post.group }}</a>
+              
+               COMMUNITY TO VIEW THE POST
+            </span>
+        </div>
+    </div>
+
+</center>
+
+{% endblock %}

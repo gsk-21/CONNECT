@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+	
+		<div class="container text-center">
+			<div class="badge badge-pill  badge-danger" style="font-size: 1rem;padding:1.5%;">
+				Invalid Password
+			</div>
+		</div>
+
+<form action="{% url 'update-profile-details'%}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+		<div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
+			<!--Content-->
+			<div class="modal-content">
+		
+				<!--Header-->
+				<div class="modal-header">
+					<img src="{{user.profile.profile_pic.url}}" style="width: 10vw; height: 10vw;"
+					alt="avatar" class="rounded-circle img-responsive ">
+				</div>
+				<!--Body-->
+				<div class="modal-body text-center mb-1">
+		
+					<h5 class="mt-1 mb-2 font-weight-bold dark-text">{{user.first_name}}</h5>
+
+					<div class="md-form ml-0 mr-0">
+						<input type="text" id="form29" required name="new-name" class="form-control form-control-sm validate ml-0">
+						<label data-error="wrong" data-success="right" for="form29" class="ml-0">Enter new name</label>
+					</div>
+				
+					<div class='file-input update-profile-img-btn'>
+						<input type='file' name="new-profile-pic" id="upload-profile-image">
+						<span class=' btn btn-rounded btn-primary font-weight-bold'>Choose new profile image</span>
+						<span class='label file-selection' data-js-label>No file selected</span>
+					
+					</div>
+
+					<div class="md-form ml-0 mr-0">
+						<input type="password" type="text" id="form29" name="password" required
+						 class="form-control form-control-sm validate ml-0">
+						<label data-error="wrong" data-success="right" for="form29" class="ml-0">Enter password</label>
+					</div>
+		
+					<div class="text-center mt-4">
+						<button class="btn btn-dark btn-rounded font-weight-bold mt-1">SUBMIT</button>
+					</div>
+		
+				</div>
+		
+			</div>
+			<!--/.Content-->
+		</div>
+
+</form>
+
+
+<br>
+<script>
+
+	var inputs = document.querySelectorAll('.file-input')
+
+	for (var i = 0, len = inputs.length; i < len; i++) {
+		customInput(inputs[i])
+	}
+
+	function customInput(el) {
+		const fileInput = el.querySelector('[type="file"]')
+		const label = el.querySelector('[data-js-label]')
+
+		fileInput.onchange =
+			fileInput.onmouseout = function () {
+				if (!fileInput.value) return
+
+				var value = fileInput.value.replace(/^.*[\\\/]/, '')
+				el.className += ' -chosen'
+				label.innerText = value
+			}
+	}
+
+
+	function set_profile_pic() {
+		document.querySelector(".profile-pic-btn-set").style.display = 'none'
+		document.querySelector("#profile-pic-form").style.display = 'block'
+	}
+
+
+	function cancel_set_profile_pic() {
+		document.querySelector("#profile-pic-form").style.display = 'none'
+		document.querySelector(".profile-pic-btn-set").style.display = 'inline'
+	}
+</script>
+{% endblock content %}

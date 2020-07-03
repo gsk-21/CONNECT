@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+<div class="container " style="width: 75%;margin: auto;">
+	<div class="container" style="margin: auto;">
+		<p class="font-weight-bolds" style="font-size: 3rem;">ALL POSTS</p>
+	
+	</div>
+
+</div>
+
+<div class="" style="width: 80%;margin: auto;">
+
+	<hr>
+	<br><br>
+</div>
+
+<div class="containers " style="width: 70%;margin: auto;">
+
+
+
+	<div class="col-md-10 " style="margin: auto;">
+
+		{% for post in all_posts %}
+
+		<div class="col mb-4 community-detail-post-card" id="post-section-{{post.slug}}">
+			<!-- Card -->
+			<div class="card ">
+
+				<div class="card-body" style="margin-top: -.3rem;">
+
+					<!--Title-->
+					{% if post.author.profile.profile_pic %}
+
+					<div class="containers">
+						<div class="media">
+							<a href="{% url 'about-user' post.author.pk %}" >
+							<div style="background-image: url({{post.author.profile.profile_pic.url}});"
+							 class="rnd-img" alt="avatar image ">
+							</div>
+							</a>
+
+
+							<h5 class="mt-0  black-text community-detail-post-author">
+								<a href="{% url 'about-user' post.author.pk %}">
+									{{post.author.first_name}}
+								</a>
+							</h5>
+
+						</div>
+					</div>
+
+					{% else %}
+					<div class="containers">
+						<div class="media ">
+							<div style="background-image: url({% static 'image/empty-user.png'%});" class="rnd-img"
+								alt="avatar image ">
+							</div>
+
+							<h5 class="mt-0  black-text community-detail-post-author">
+								{{post.author.first_name}}</h5>
+
+						</div>
+					</div>
+
+					{% endif %}
+
+					{% if not post.post_pic %}
+					<hr>
+					{% endif %}
+
+
+
+					<!--Title-->
+
+
+				</div>
+
+				<!--Card image-->
+
+				{% if post.post_pic %}
+
+				<div class="containers view overlay" style="">
+
+					<img class="card-img-top card post-detail-image"
+						style=""
+						src="{{post.post_pic.url}}" alt="Card image cap">
+					<a href="{% url 'post-detail' post.slug%}">
+						<div class="mask rgba-white-slight"></div>
+					</a>
+				</div>
+
+				{% endif %}
+
+				{% if not post.post_pic %}
+
+				<div class="card-body" style="margin-top: -2rem;">
+
+				{% else %}
+
+				<div class="card-body">
+
+				{% endif %}
+				<div class="post-card-content-container view overlay">
+
+					<a href="{% url 'post-detail' post.slug%}">
+						<div class="mask rgba-white-slight"></div>
+					</a>
+
+							<p class="card-title post-title">{{post.title}}</p>
+							<!--Text-->
+							<p class="card-text post-message">{{post.message}}</p>
+
+				<p class="card-text post-messages black-text font-weight-bold" style="font-size: 1.rem;">
+					COMMUNITY:
+					<a href="{% url 'community-detail' post.group.slug %}" 
+					class="font-weight-bold" style="font-size: 1.2rem;">{{ post.group }}</a>
+				</p>
+
+				<p class="card-text post-messages grey-text " style="font-size: 1rem;">
+					{{ post.posted_on |naturalday }}
+				
+				</p>
+				
+
+						</div>
+					</div>
+
+
+
+	
+
+
+								<!-- -------- COMMENT SECTION ---------- -->
+								{% if post.comments.all.count %}
+								<div class="card-body comments-section-header">
+									<h5 class="mt-0 font-weight-bold black-text comment-heading">COMMENTS</h5>
+								</div>
+								{% endif %}
+								<div class="comment-section" id="comment-section_{{post.slug}}">
+									{% include 'posts/_list-comment-section.html' %}
+								
+								</div>
+								
+								
+								<!-- ------------------ COMMENT INPUT ------------------ -->
+								{% include 'posts/_comment-form.html' %}
+
+
+				</div>
+				<!-- Card -->
+			</div>
+
+			{% endfor %}
+
+
+
+		</div>
+
+	</div>
+
+
+</div>
+
+
+	{% endblock content %}

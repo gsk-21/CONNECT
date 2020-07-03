@@ -1,0 +1,45 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+	{% for comment in post.comments.all %}
+
+	<div class="card-body " style="margin-bottom: -1.3rem;">
+		<div class="containers " id="post-detail-comments-container">
+			<div class="media">
+
+				<a href="{% url 'about-user' comment.author.pk %}">
+					{% if comment.author.profile.profile_pic %}
+
+					<div style="background-image: url({{comment.author.profile.profile_pic.url}});"
+						class="cmt-author-profile-pic post-detail-comment-author-pic z-depth-1" alt="avatar image " >
+					</div>
+
+					{% else %}
+					<div class="cmt-author-no-profile-pic text-center z-depth-1">
+						<i class="fa fa-user" id="cmt-author-no-profile-pic"></i>
+					</div>
+
+					{% endif %}
+				</a>
+
+
+				<div class="media-body">
+
+					{% include 'posts/_single-comment.html' %}
+
+				</div>
+
+
+				
+			</div>
+
+		</div>
+	</div>
+	{% endfor %}
+
+	
+
+

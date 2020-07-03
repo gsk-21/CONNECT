@@ -1,0 +1,188 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+
+
+<div class="media " style="margin-top:1%;">
+
+	<a href="{% url 'about-user' reply.user.pk %}">
+		{% if reply.user.profile.profile_pic %}
+
+		<div style="background-image: url({{reply.user.profile.profile_pic.url}});" 
+		class="cmt-author-profile-pic z-depth-1"
+			alt="avatar image ">
+		</div>
+
+		{% else %}
+
+		<div class="cmt-author-no-profile-pic text-center z-depth-1">
+			<i class="fa fa-user" id="cmt-author-no-profile-pic"></i>
+		</div>
+
+		{% endif %}
+	</a>
+
+
+	<div class="media-body bg-dange" >
+		<a href="{% url 'about-user' reply.user.pk %}" >
+			<h6 class="mt-0 post-detail-cmt-author-name"
+			style="margin-bottom:.5%;margin-top: -.2% !important;">
+				{{reply.user.first_name}}</h6>
+		</a>
+		<div class="post-detail-cmt-message ">
+			<span class="font-weight-bold post-detail-reply-to">
+				<a href="{% url 'about-user' reply.reply_to.pk %}">
+					@{{reply.reply_to.first_name}}
+				</a>
+			</span>	
+			<span class="reply-message post-detail-reply-message" > 
+				{{reply.reply}}
+			</span>
+			
+		</div>
+
+		<p class="grey-text  post-detail-reply-delete" style="margin-top: 1%;">
+			{{ reply.replied_on  | shortnaturaltime }}
+
+			<span class="container text-center " style="margin-left: .5rem;">
+
+				<a class=" grey-text post-detail-reply" href="" data-pk="{{comment.pk}}"
+				id='reply-to-reply-{{reply.pk}}' > Reply </a>
+
+				
+			</span>
+
+
+			{% if reply.user == user %}
+
+			<span class="container text-center " style="margin-left: .3rem;">
+				<a class=" grey-text post-detail-delete" href="" data-reply_pk="{{reply.pk}}"
+				 id='delete-reply-{{reply.pk}}'> Delete </a>
+			</span>
+
+			{% endif %}
+
+
+		</p>
+
+	</div>
+</div>
+
+
+
+<script>
+
+
+	//document.querySelector('#reply-to-{{comment.pk}}').addEventListener('click',function(){})
+
+	$('#reply-to-reply-{{reply.pk}}').on('click', function (event) {
+
+		//window.scrollTo(100, 500)
+		event.preventDefault()
+
+		window.scrollTo(100, 200)
+
+		var comment_pk = this.dataset.pk
+		var comment_form = $('#comment-form_{{post.slug}}')[0]
+		comment_form.setAttribute('name', 'reply')
+		var form_text_area = $('#comment-form_{{post.slug}}')[0][2]
+		
+		form_text_area.value = '@{{reply.user.first_name}} '
+		form_text_area.focus()
+
+		if ($('#comment-form_{{post.slug}}')[0][2].value != '') {
+			window.scrollTo(100, 200)
+		}
+
+
+		$('#comment-form_{{post.slug}}').on('submit', function (event) {
+
+			event.preventDefault()
+			this.setAttribute('name', 'reply')
+
+			let reply_message = this[2].value
+			this[2].value = ''
+			let reply_to_pk = "{{reply.user.pk}}"
+			let reply_for = 'reply'
+
+			if((reply_message.split(" ")[0][0]) == "@"){
+
+				let temp = reply_message.split(" ")
+				temp[0] = ""
+				reply_message = temp.join(" ")	
+			}
+			if(reply_message != ''){
+				reply_comment(comment_pk, reply_message,reply_to_pk,reply_for)
+				this.setAttribute('name', '')
+			}
+
+
+		})
+	})
+
+	function reply_comment(comment_pk, reply_message,reply_to_pk,reply_for) {
+
+		$.ajax(
+			{
+				headers: { "X-CSRFToken": '{{csrf_token}}' },
+				url: "{% url 'reply-comment' %}",
+				type: "POST",
+				data: {
+					reply_message: reply_message,
+					comment_pk: comment_pk,
+					reply_to_pk:reply_to_pk,
+					reply_for:reply_for,
+				},
+
+				success: function (json) {
+					console.log(json)
+					console.log("Success")
+					location.reload()
+				},
+				error: function (xhr, errmsg, err) {
+					console.log("Error!")
+					console.log(xhr.status + ":" + xhr.responseText)
+				}
+
+			}
+		)
+	}
+
+
+
+	$('#delete-reply-{{reply.pk}}').on('click', function (event) {
+		event.preventDefault()
+		reply_pk = this.dataset.reply_pk
+		delete_reply(reply_pk)
+	})
+
+	function delete_reply(reply_pk) {
+
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: "{% url 'delete-reply' %}",
+			type: "POST",
+			data: {
+				reply_pk: reply_pk,
+			},
+
+			success: function (json) {
+
+				location.reload()
+				//console.log(json)
+				//console.log("Reply deleted")
+			},
+			error: function (xhr, errmsg, err) {
+				console.log("Error!")
+				console.log(xhr.status + ":" + xhr.responseText)
+			}
+
+		})
+
+	}
+
+
+</script>

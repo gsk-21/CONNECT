@@ -1,0 +1,111 @@
+{% load static %}
+{% load humanize %}
+
+<form action="{% url 'add-comment' %}" method="post" id="comment-form_{{post.slug}}" name="" >
+	{% csrf_token %}
+	<input type="text" name="post-slug_{{post.slug}}" value="{{ post.slug }}" hidden readonly>
+	<div class="card-body" style="margin: 1rem;margin-top: -1rem;padding-bottom: 2rem;">
+		<!--Material textarea-->
+
+		<div class="md-form input-group mb-3">
+			<textarea id="comment-form" class="md-textarea form-control comment-form-textarea" 
+			rows="1" 
+			required placeholder="Add your comment"
+			 name="comment-message_{{post.slug}}"
+				style="resize: none;overflow: auto;
+				margin-left: -1rem;"></textarea>
+
+			<div class="input-group-append post-btn">
+				<button class=" m-0 px-3   font-weight-bold  text-center " 
+				disabled
+				type="submit"
+				name="post_btn_{{post.slug}}"
+				id="comment-form"
+				style="box-shadow: none;
+				 background: none;border: none;outline: none;color: grey;">Post</button>
+				 
+			</div>
+			
+		</div>
+
+
+	</div>
+</form>
+
+
+
+
+
+<script>
+
+
+	comment_box = $('textarea[name = "comment-message_{{post.slug}}"]')
+
+
+	comment_box.focus(function () {
+
+		post_btn = $('button[name="post_btn_{{post.slug}}"]')
+		post_btn.css('color', 'black')
+		post_btn.removeAttr("disabled");
+
+		//window.scrollTo(100, 500)
+		//console.log($('button[name="post_btn_{{post.slug}}"]'))
+	})
+
+	comment_box.focusout(function () {
+
+		post_btn = $('button[name="post_btn_{{post.slug}}"]')
+		post_btn.css('color', 'grey')
+		
+	})
+
+
+
+
+	$('#comment-form_{{post.slug}}').on('submit',function(event){
+		event.preventDefault();
+		post_btn = $('button[name="post_btn_{{post.slug}}"]')
+		post_btn.attr("disabled", true);
+		post_btn.css('color','grey');
+
+		let post_slug = this[1].value
+		let comment_message = this[2].value
+		let comment_section = this.parentElement.childNodes[11]
+
+		if(this.name != 'reply'){
+			if(comment_message!=''){
+			add_comment(comment_message, post_slug)
+			this[2].value = ''
+			}
+			//location.reload()
+		}
+
+	})
+
+	function add_comment(comment_message,post_slug){
+		console.log('Adding comment')
+		$.ajax(
+			{
+				headers: { "X-CSRFToken": '{{csrf_token}}'},
+				url:"{% url 'add-comment' %}",
+				type:"POST",
+				data:{
+					comment_message:comment_message,
+					post_slug:post_slug,
+				},
+				
+				success:function(json){
+					console.log(json)
+					console.log("Success")
+					location.reload()
+
+					//$("#comment-section_{{post.slug}}").load(window.location.href + "#comment-section_{{post.slug}}");
+				},
+				error:function(xhr,errmsg,err){
+					console.log("Error!")
+					console.log(xhr.status+":"+xhr.responseText)
+				}
+			}
+		)
+	}
+</script> 

@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+
+
+<!-- <div style="position: absolute;z-index: 50;float: right !important;margin-left: 60%;" aria-live="assertive" aria-atomic="true"
+ class="toast " 
+data-autohide="true" data-delay="4000">
+	<div class="container  bg-success text-white font-weight-bold message">
+		<div class="toast-body" >
+			<i class="fa fa-check"></i>
+			{{"You commented on this post" | upper}}
+		</div>
+	</div>
+  </div> -->
+
+<div class="containers post-detail-whole-container" style="width: 75%;margin: auto;">
+
+	<div class="containers post-detail-logo-container bg-successs zoom" >
+
+			<h5 class=" post-detail-name">
+				<a href="{% url 'community-detail' post.group.slug %}">
+					{{post.group}}
+				</a>
+			</h5>
+		
+	</div>
+
+
+	<!-- <h2 class="text-center font-weight-bold"> {{post.group}}</h2> -->
+
+<div class="post-detail-container">
+
+
+	{% if post.post_pic %}
+	
+	<div class="row z-depth-1-half post-detail-row"  id="post-detail-row">
+
+	{% else %}
+ 
+	<div class="row z-depth-1-half post-detail-row post-detail-no-pic" id="post-detail-row"
+	style="height: 37rem;">
+
+	{% endif %}
+
+
+			<div class=" col-lg-7 col-md-12">
+
+				<!-- ---------------------- LEFT ---------------------- -->
+
+				<!-- Card -->
+				<div class="cards ">
+
+					<div class="card-body">
+
+						<!--Title-->
+						{% if post.author.profile.profile_pic %}
+
+						<div class="containers" style="margin-top:-.5rem;">
+							<div class="media ">
+								<a  href="{% url 'about-user' post.author.pk %}" >
+									<div style="background-image: url({{post.author.profile.profile_pic.url}});"
+									 class="rnd-img post-detail-author-image" alt="avatar image ">
+									</div>
+								</a>
+
+								
+								<h5 class="mt-0  black-text community-detail-post-author">
+									<a href="{% url 'about-user' post.author.pk %}">
+									{{post.author.first_name}} </a>
+								</h5>
+								
+
+
+							</div>
+						</div>
+
+						{% else %}
+						<div class="containers">
+							<div class="media ">
+
+								<div class="post-detail-no-user-image text-center z-depth-1">
+									<i class="fa fa-user" id="post-detail-no-user-image"></i>
+								</div>
+								<h5 class="mt-0  black-text community-detail-post-author">
+									{{post.author.first_name}}</h5>
+
+							</div>
+						</div>
+
+						{% endif %}
+						<!--Title-->
+						<div class="post-detail-hr">
+							<hr>
+						</div>
+					</div>
+
+
+					<div class="col  mobile-br mb-4" style="display: none;margin-top: -1.5%;">
+						<hr>
+					</div>
+					<!--Card image-->
+
+					{% if post.post_pic %}
+
+					<div class=" post-detail-post-image" id="post-detail-post-image"
+					 style="height: 23.5rem;">
+
+						<img class="card-img-top card z-depth-1-half post-detail-image" 
+						src="{{post.post_pic.url}}"
+							style="box-shadow: none !important;margin-top: -3%;" alt="Card image cap">
+
+					</div>
+
+					
+					<div class="post-detail-like " >
+						{% include 'posts/_home-post-like.html' %}
+					</div>
+
+					{% else %}
+					<div class="containers post-detail-no-pic-container" >
+
+						<p class="container card-title post-detail-title
+						 post-detail-title-no-post-pic">{{post.title}}
+						</p>
+						<div class="containers post-detail-no-pic-content" 
+						id="post-detail-no-pic-content">
+							<p class=" card-text  post-detail-with-fixed-height-no-pic">
+								{{post.message }}
+
+							</p>
+
+							<p class="card-text post-detail-message post-detail-posted-on
+							 grey-text" style="font-size: .8rem;">
+								{{ post.posted_on |naturalday }}
+
+							</p>
+
+							{% if not post.post_pic %}
+
+							<div class="bg-successs " style="margin-left: -2.5%;">
+								{% include 'posts/_home-post-like.html' %}
+							</div>
+	
+							{% endif %}
+
+						</div>
+
+
+					</div>
+					{% endif %}
+
+				</div>
+				<!-- Card -->
+
+			</div>
+
+
+			<!-- ------------------ RIGHT --------------- -->
+
+			<div class=" col-lg-5 col-md-12  post-detail-rights " style="">
+
+
+				{% if post.post_pic %}
+
+					<p class="card-title post-detail-title">
+						{{post.title}}
+					</p>
+
+
+				<div class="post-detail-with-fixed-height ">
+
+					<p class="card-text post-detail-message containers ">
+						{{post.message}}
+					</p>
+
+					<p class="card-text post-detail-message containers  grey-text" 
+					id="post-detail-date"
+					style="font-size: .7rem;margin-top: -.5rem !important;margin-bottom: 1rem;">
+						{{ post.posted_on |naturalday }}
+
+					</p>
+
+
+
+
+					{% if post.comments.all.count %}
+					<div class="card-body post-detail-comments-section-header">
+						COMMENTS
+					</div>
+
+					<div class="comment-section  " id="comment-section_{{post.slug}}">
+						{% include 'posts/_post-detail-comment-section.html' %}
+					</div>
+
+					{% else %}
+					<div class="card-body comments-section-header">
+
+						<h5 class="mt-0 post-detail-no-comments">NO COMMENTS</h5>
+					</div>
+					{% endif %}
+
+
+				</div>
+
+				{% else %}
+
+				{% if post.comments.all.count %}
+				<div class="card-body no-post-pic-comments-heading">
+					COMMENTS
+				</div>
+				{% endif %}
+
+				<div class="containers  
+					post-detail-with-fixed-height-no-post-pic ">
+
+					{% if post.comments.all.count %}
+
+					<div class="comment-section post-detail-nopic-comment-section"
+					style="margin-top: 0rem;" id="comment-section_{{post.slug}}">
+						{% include 'posts/_post-detail-comment-section.html' %}
+					</div>
+
+					{% else %}
+
+					<div class="card-body text-center no-post-pic-no-comments">
+						NO COMMENTS
+					</div>
+ 
+					{% endif %}
+
+				</div>
+
+				{% endif %}
+
+				<div class="card-body d-block  ">
+					{% include 'posts/_comment-form.html' %}
+			
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<br>
+</div>
+
+	<div class="container">
+	</div>
+
+	<!-- --------------------------------------- BOTTOM ------------------------------------------ -->
+
+	<div class="other-posts-from-user community-detail-to-hide">
+		<hr>
+
+		<div class="col mb-4">
+			<p class="other-posts-header "> Other posts by 
+				<a href="{% url 'about-user' post.author.pk %}">{{post.author.first_name}}</a>
+			</p>
+		</div>
+
+
+		<div class="card-columns">
+			{% for post in user_posts %}
+			<div class="col mb-4 ">
+
+
+				<div class="card h-100 hoverable">
+					<!--Card image-->
+					<div class="view overlay">
+
+						{% if post.post_pic %}
+						<img class="card-img-top users-post" src="{{post.post_pic.url}}" 
+						alt="Card image cap">
+
+						{% endif %}
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<div class="mask rgba-white-slight"></div>
+						</a>
+					</div>
+
+					<!--Card content-->
+					<div class="card-body view overlay"">
+
+
+						
+						{% if post.post_pic %}
+						<!--Title-->
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<p class="card-title user_posts_title">{{post}}</p>
+						</a>
+						
+						{% if  post.message %}
+						 	<p class="card-text user_posts_message">
+								 {{post.message | truncatewords:5 }}</p>
+						{% endif %}
+							
+
+						{% else %}
+
+												<!--Title-->
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<p class="card-title user_posts_no-pic-title">{{post}}</p>
+						</a>
+						
+						
+							{% if  post.message%}
+								<p class="card-text user_posts_no-pic-message">
+									{{post.message | truncatewords:50 }}</p>							
+							{% endif %}
+							
+						{% endif %}
+							
+					</div>
+				</div>
+				<!-- Card -->
+			</div>
+
+			{% endfor %}
+
+		</div>
+	</div>
+
+	
+	
+
+<script>
+
+	if(document.querySelector(".post-detail-with-fixed-height")){
+		document.querySelector(".post-detail-with-fixed-height").addEventListener('mouseover',function(){
+				this.style.overflow = "auto"
+			})
+
+		document.querySelector(".post-detail-with-fixed-height").addEventListener('mouseout',function(){
+				this.style.overflow = "hidden"
+			})
+	}
+		
+	if(document.querySelector(".post-detail-with-fixed-height-no-post-pic")){
+		document.querySelector(".post-detail-with-fixed-height-no-post-pic").addEventListener('mouseover',function(){
+				this.style.overflow = "auto"
+			})
+
+		document.querySelector(".post-detail-with-fixed-height-no-post-pic").addEventListener('mouseout',function(){
+				this.style.overflow = "hidden"
+			})
+	}
+
+	
+
+</script>
+
+
+	{% endblock content %}

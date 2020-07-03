@@ -1,0 +1,456 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;800&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;800&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;800&display=swap');
+.btn-floating {
+    position: relative;
+     z-index: 1;
+     display: inline-block;
+     padding: 0;
+     margin: 10px;
+     overflow: hidden;
+     vertical-align: middle;
+     cursor: pointer;
+     border-radius: 50%;
+     -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+     box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+     -webkit-transition: all .2s ease-in-out;
+     transition: all .2s ease-in-out;
+     width: 47px;
+     height: 47px;
+}
+
+
+
+.btn-elegant {
+    color: #fff;
+    background-color: #2e2e2e !important;
+}
+
+.waves-effect {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.border-0 {
+    border: 0 !important;
+}
+
+.btn-floating.btn-sm i {
+    font-size: .96154rem;
+    line-height: 36.15385px;
+}
+
+
+.btn-floating.btn-lg i {
+    font-size: 1.625rem;
+    line-height: 61.1px;
+}
+.btn-floating i {
+    display: inline-block;
+    width: inherit;
+    color: #fff;
+    text-align: center;
+}
+.btn-floating i {
+    font-size: 1.25rem;
+    line-height: 47px;
+}
+.fa, .fas {
+    font-weight: 900;
+}
+.fa, .far, .fas {
+    font-family: "Font Awesome 5 Free";
+}
+.fa, .fab, .fad, .fal, .far, .fas {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+
+i {
+    font-style: italic;
+}
+
+.btn-floating {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 0;
+    margin: 10px;
+    overflow: hidden;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    width: 47px;
+    height: 47px;
+}
+.btn-elegant {
+    color: #fff;
+    background-color: #2e2e2e !important;
+}
+.waves-effect {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.btn-lg, .btn-group-lg>.btn {
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+	text-align: center;
+}
+
+.btn-floating.btn-lg {
+    width: 61.1px;
+    height: 61.1px;
+	border-radius: 50%;
+}
+
+
+
+.btn-floating:hover{
+	-webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+     box-shadow: 0 9px 15px 0 rgba(0, 0, 0, 0.383), 0 8px 20px 0 rgba(0, 0, 0, 0.397);
+}
+
+
+.file-input {
+  display: inline-block;
+  text-align: left;
+  background: #fff;
+  padding: 16px;
+  width: 450px;
+  position: relative;
+  border-radius: 3px;
+}
+
+.file-input > [type='file'] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.file-input > .button {
+  display: inline-block;
+  cursor: pointer;
+  background: #eee;
+  padding: 8px 16px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+.file-input:hover > .button {
+  background: dodgerblue;
+  color: white;
+}
+
+.file-input > .label {
+  color: #333;
+  white-space: nowrap;
+  opacity: .3;
+}
+
+.file-input.-chosen > .label {
+  opacity: 1;
+}
+
+label{
+  color: black !important;
+}
+
+.already-sign:hover{
+  color: gray !important;
+}
+
+/*
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+Bootstrap 4 breakpoints
+*/
+
+  /* Small devices (landscape phones, 544px and up) */
+  @media (min-width: 544px) {
+    .class-name {font-size: 16px;}
+  }
+
+  /* Medium devices (tablets, 768px and up) */
+  @media (min-width: 768px) {
+    .class-name {font-size: 30px;}
+  }
+
+  /* Large devices (desktops, 992px and up) */
+  @media (min-width: 992px) {
+    .class-name {font-size: 40px;}
+  }
+
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (min-width: 1200px) {
+    .class-name {font-size: 48px;}
+  }
+
+
+
+.media .avatar {
+    width: 64px;
+}
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 0.8rem;
+}
+
+.btn-rounded{
+	border-radius: 10em;
+}
+
+
+
+div.rnd-img , div.community-detail-rnd-img {
+/* make it responsive */
+
+
+width: 2.7rem;
+height: 2.7rem;
+display:block;
+/* div height to be the same as width*/
+padding-top:2.7rem;
+
+/* make it a circle */
+border-radius:50%;
+
+/* Centering on image`s center*/
+background-position-y: center;
+background-position-x: center;
+background-repeat: no-repeat;
+
+/* it makes the clue thing, takes smaller dimension to fill div */
+background-size: cover;
+/* box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important;
+box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important; */
+}
+
+.post-list-no-user-image{
+  width: 2.2rem;
+  height: 2.2rem;
+  background-color: gainsboro;
+  border-radius: 50%;
+}
+
+#post-list-no-user-image{
+  font-size: 1.1rem;
+  color: white;
+  margin-top: 25%;
+}
+
+.post-detail-no-user-image{
+  width: 2.7rem;
+  height: 2.7rem;
+  background-color: gainsboro;
+  border-radius: 50%;
+}
+
+#post-detail-no-user-image{
+  font-size: 1.2rem;
+  color: white;
+  margin-top: 25%;
+}
+
+div.community-detail-rnd-img{
+  width: 2.2rem;
+  height: 2.2rem;
+  padding-top:2.2rem;
+
+}
+
+div.cmt-author-profile-pic{
+/* make it responsive */
+
+
+width: 2.2rem;
+height: 2.2rem;
+padding-top:2.2rem;
+display:block;
+border-radius:50%;
+
+background-position-y: center;
+background-position-x: center;
+background-repeat: no-repeat;
+
+/* it makes the clue thing, takes smaller dimension to fill div */
+background-size: cover;
+/* box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important;
+box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important; */
+margin-right:.5rem;
+margin-top: -.3rem !important;
+}
+
+.cmt-author-no-profile-pic{
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right:.5rem;
+margin-top: -.3rem !important;
+background-color: gainsboro;
+border-radius: 50%;
+}
+
+#cmt-author-no-profile-pic{
+  font-size: 1.1rem;
+  color: white;
+  margin-top: 25%;
+}
+/* ----------------------------   DROPDOWN ------------------- */
+
+
+/* .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+ } */
+
+ a{
+	 border: none;
+   outline: none;
+   color: black;
+ }
+ /* a:hover{
+   	 border: none;
+   outline: none;
+   color: black;
+   text-decoration:underline;
+ } */
+
+
+/* BROWSER REQUIREMENTS */
+
+
+* { -webkit-tap-highlight-color: transparent; }
+
+input:focus, input.form-control:focus {
+
+	outline:none !important;
+	outline-width: 0 !important;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+ }
+
+/* width */
+::-webkit-scrollbar{
+  width: .3em;
+
+   }
+   /* Track */
+   ::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px white;
+	border-radius: 5px;
+   }
+   /* Handle */
+   ::-webkit-scrollbar-thumb {
+	background: black;
+  border-radius: 10px;
+  width: 5px;
+  background-color:#4c8bf5;
+  background-color: black;
+   }
+   /* Handle on hover */
+   ::-webkit-scrollbar-thumb:hover {
+	background:black;
+
+   }
+
+/* Thin Scrollbar */
+:root{
+	scrollbar-color: #4c8bf5 white !important;
+	scrollbar-color:black white !important;
+  scrollbar-width: thin !important;
+   }
+.scroller:hover::-webkit-scrollbar-thumb{
+  background-color: red;
+}
+
+ a:focus {
+    outline: none;
+}
+
+button:focus {
+	outline: none;
+ }
+
+
+
+ a:hover{
+   color: gray;
+
+ }
+
+
+.md-textarea{
+  scrollbar-width: none;
+}
+
+
+
+@media (min-width: 34em) {
+  .card-columns {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+  }
+}
+
+@media (min-width: 62em) {
+  .card-columns {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+  }
+}
+
+/* @media(min-width:240px){
+  .card-columns {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1 ;
+}
+} */
+

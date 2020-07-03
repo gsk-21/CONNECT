@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+{% block content %}
+
+
+
+
+
+<div class=" bg-darks bg-lights "  id="home">
+	<div class="row">
+		
+	{% if user.is_authenticated %}
+		<div class="col-lg-3 d-none d-lg-block  ">
+			
+					<div class="col-lg-3 position-fixed  home-left-fixed">
+
+						<div class="row ">
+							<div class="col-md-12 bg-dangers  ">
+
+
+								<div class="container home-community-container" id="home-community-container">
+
+									<div class="row  " >
+										{% for community in home_communities %}
+			
+										{% if home_communities.count <= 5 %}
+											<div class="col-md-9 " style="margin: auto;">
+			
+										{% else %}
+											<div class="col-md-6" >
+										{% endif %}
+											
+											<a href="{% url 'community-detail' community.slug %}">
+												<div class="cards containers home-single-community">
+			
+			
+													{% if community.group_profile_pic %}
+			
+													<img src="{{community.group_profile_pic.url}}" 
+			
+													{% if home_communities.count <= 5 %}
+													style="height: 6rem;"
+													{% endif %}
+			
+													class="hoverable home-left-community-image" alt="Nope">
+			
+													{% else %}
+			
+													<div class=" home-left-no-community-image-icon hoverable text-center"
+													{% if home_communities.count <= 5 %}
+			
+													style="height: 6rem;"
+			
+													{% endif %}>
+			
+														<i class="fa fa-users "
+														{% if home_communities.count <= 5 %}
+														style="margin-top: 1.5rem;"
+														{% endif %}
+														id="home-left-no-community-image-icon"></i>
+													</div>
+			
+													{% endif %}
+			
+													<p class="text-center home-left-community-name">
+														{{community | title | truncatewords:2 | truncatechars:12}}
+													</p>
+			
+			
+												</div>
+											</a>
+			
+										</div>
+			
+										{% endfor %}
+										
+									</div>
+								</div>
+							</div>
+
+							<div class="containers home-left-community-header"
+							style="font-size: .9rem;">
+								{{"Communities" | upper}}
+
+							</div>
+
+							<!-- <div style="font-size: .7rem;margin: auto;margin-top: .4rem;"
+							class="grey-text text-center font-weight-bold"> 
+								Scroll to view all communities</div> -->
+						</div>
+					</div>
+
+		</div>
+
+		
+	{% else %}
+
+		<div class="col-lg-3 d-none col-md-4 d-lg-block d-md-block mt-2 ">
+	
+					<div class="col-lg-3 col-md-4  position-fixed community-detail-to-hide">
+					<div class="container guest-left-text card ">
+
+						<div class="containers bg-succes mt-4 mb-3" style="width: 90%;margin: auto;"> 
+		
+
+							 Join Connect and 
+							{{"CREATE YOUR OWN COMMUNITY AND EXPLORE VARIOUS OTHER COMMUNITIES" | lower |capfirst }} <br><br>
+							<i class="far fa-paper-plane"></i> {{"POST YOUR CONTENT IN VARIOUS COMMUNITIES" | lower | capfirst }} <br><br>
+							<i class="far fa-heart"></i> {{"LIKE A POST" | lower | capfirst }} <br><br>
+							<i class="far fa-comment"></i> {{"COMMENT  ON OTHER'S POSTS" | lower | capfirst }} <br><br>
+							<i class="far fa-comment-dots"></i> {{"REPLY TO OTHER'S COMMENTS AND REPLIES" | lower | capfirst }} <br><br>
+							
+
+						</div>
+						</div>
+					</div>
+		</div>
+
+
+
+	{% endif %}
+					
+		
+		{% if user.is_authenticated %}
+		<div class="col-lg-6 col-md-12 bg-darks mt-2 "  id="home-center"
+		style="margin:auto;">	
+				
+		{% else %}
+		<div class="col-lg-6 col-md-8 bg-darks mt-2 community-detail-to-hide"  id="home-center"
+		style="margin:auto;">	
+		{% endif %}
+					
+
+
+			<div class="row " >
+
+				<div class="col " style="margin: auto;">
+
+					{% if user.is_authenticated and has_community %}
+					<!-- <p class="home-users-head " id="home-users-head"
+					 style="letter-spacing: .8px;margin-left: 5%;">
+						{{ "Feeds for you" |  lower | capfirst}}
+					</p> -->
+
+					<div class="col mobile-br" 
+					style="display: none;margin-bottom: 5%;margin-top: -2%;">
+					</div>
+					{% include 'posts/_home-posts.html' %}
+
+
+
+
+				   {% if non_following_posts.count %}
+
+						  {% include 'posts/_non_following_posts.html' %}  
+						  
+				   {% endif %}
+					   
+
+
+					{% elif user.is_authenticated and not has_community %}
+
+					<p class="home-users-head "
+					 style="letter-spacing: .8px;margin-left: 5%;font-size: 1.8rem;font-weight: 600;">
+						{{ "Join communities to get your customized feeds" | lower | capfirst }}
+					</p>
+
+						{% include 'posts/_home-posts-for-guest.html' %}
+
+					{% else %}
+
+						{% include 'posts/_home-posts-for-guest.html' %}
+
+					{% endif %}
+				</div>
+			</div>
+
+
+		</div>
+
+
+		<div class="col-lg-3  d-none d-md-block mt-1" style="width: 100% !important;"
+		id="home-right-users">
+						
+		
+			  <!-- <div style="position: absolute;z-index: 50;" aria-live="assertive" aria-atomic="true" class="toast" 
+			  data-autohide="true" data-delay="4000">
+				  <div class="container  bg-success text-white font-weight-bold message">
+					  <div class="toast-body" >
+						  <i class="fa fa-check"></i>
+						  {{"LOGGED OUT" | upper}}
+					  </div>
+				  </div>
+				</div> -->
+
+			<div class="col-lg-3  position-fixed home-right  d-none d-lg-block bg-succes"
+
+			style="">
+			<p class="home-users-head " style="letter-spacing: .8px;">
+				{{ "People using <br> Connect"}}
+			</p>
+				<div class="row bg-dangers ">
+					 <div class="col-md-10">
+						{% for profile in profiles %}
+			
+						{% if profile.user != user %}
+						<div class="row">
+						
+							<div class="col-md-12  home-user-bubble ">
+
+								<a href="{% url 'about-user' profile.user.pk %}" class="hom-user-name">
+									<div class="media">
+							
+										{% if profile.profile_pic  %}
+										<img class="d-flex mr-3 home-right-user-image" 
+										src="{{profile.profile_pic.url}}"
+											alt="Generic placeholder image">
+							
+										{% else %}
+							
+										<div class=" home-right-no-user-image-icon d-flex mr-3">
+											<i class="fa fa-user " id="home-right-no-user-image-icon"></i>
+										</div>
+										{% endif %}
+							
+										<div class="media-body">
+											<p class="mt-1 home-right-user-name " 
+											style="font-weight: 600;font-size: .8rem;">{{ profile.user.first_name | upper}}
+												<br>
+												<span class="joined-on  grey-text" style="font-size: .8rem;font-weight: 500 !important;">
+
+													
+													{% if profile.joined_on|naturalday == 'today' or profile.joined_on|naturalday == 'yesterday' %}
+
+															Joined  {{ profile.joined_on | naturalday }}
+
+													{% else %}
+
+															Joined  on {{ profile.joined_on | naturalday }}
+
+													{% endif %}
+														
+
+													
+													{% if profile.user.is_active %}
+														1
+													{% endif %}
+														
+												</span>
+											</p>
+							
+
+											
+										</div>
+									</div>
+								</a>
+
+							</div>
+						
+						</div>							
+						{% endif %}
+							
+						{% endfor %}	
+						
+
+					 </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% if not user.is_authenticated %}
+
+<div class="row mobile-br" style="display: none;">
+
+	<div class="col-md-12">
+
+		<div class="containers  card bg-dark text-white " style="width: 90%;margin: auto;">
+
+			<div class="containers bg-succes" 
+			style="width: 95%;margin: auto;font-size: .7em !important;font-weight: 600 !important;"> 
+
+			<div class="container">
+				<br>
+				 Join Connect and 
+				{{"CREATE YOUR OWN COMMUNITY AND EXPLORE VARIOUS OTHER COMMUNITIES" | lower |capfirst }} <br><br>
+				<i class="far fa-paper-plane"></i> {{"POST YOUR CONTENT IN VARIOUS COMMUNITIES" | lower | capfirst }} <br><br>
+				<i class="far fa-heart"></i> {{"LIKE A POST" | lower | capfirst }} <br><br>
+				<i class="far fa-comment"></i> {{"COMMENT  ON OTHER'S POSTS" | lower | capfirst }} <br><br>
+				<i class="far fa-comment-dots"></i> {{"REPLY TO OTHER'S COMMENTS AND REPLIES" | lower | capfirst }} <br><br>
+				
+				<br>
+			</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row mobile-br" style="display: none;">
+	<br>
+</div>
+
+
+
+<div class="row mobile-br" style="display: none;width: 95%;margin: auto;">
+		{% include 'posts/_home-posts-for-guest.html' %}
+</div>
+
+{% endif %}
+
+<div class="row mobile-br" style="display: none;">
+
+</div>
+
+<script>
+
+
+	if(document.querySelector("#home-community-container")){
+			document.querySelector("#home-community-container").addEventListener('mouseover',function(){
+			this.style.overflow = "auto"
+		})
+
+		document.querySelector("#home-community-container").addEventListener('mouseout',function(){
+			this.style.overflow = "hidden"
+		})
+	}
+
+
+
+
+
+	console.log(document.querySelector("#home-right-users"))
+
+	if(document.querySelector("#home-right-users")){
+		document.querySelector("#home-right-users").addEventListener('mouseover',function(){
+		this.style.overflow = "auto"
+		console.log('flow..')
+
+	})
+
+	document.querySelector("#home-right-users").addEventListener('mouseout',function(){
+		this.style.overflow = "hidden"
+		console.log('hidden..')
+	})
+
+	}
+
+
+
+</script>
+
+
+
+{% endblock content %}
+

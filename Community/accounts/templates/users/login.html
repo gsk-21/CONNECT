@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<!--Modal: Login / Register Form-->
+<!-- Modal -->
+<!-- Modal -->
+
+<div class="community-detail-to-hide">
+	<form action="" method="post">
+		{% csrf_token %}
+		<div class="modal-dialog modal-md" role="document">
+			<!--Content-->
+			<div class="modal-content form-elegant form-block">
+				<!--Header-->
+				<div class=" text-center">
+					<h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel">
+						<strong>Sign In</a></strong></h3>
+	
+				</div>
+				<!--Body-->
+	
+					<div class="container text-center">
+						{% if form.errors %}
+						<br>
+							<div class="text-danger invalid-login">
+							Invalid Login Credentials
+							</div>
+					
+						{% endif %}
+					</div>
+				<!--Body-->
+				<div class="container">
+					<div class="modal-body">
+	
+						<div class="md-form mb-5">
+							<i class="fas fa-user prefix grey-texts"></i>
+							<input type="text" id="orangeForm-name" class="form-control validate" name="username"
+								value="{{username}}" required>
+							<label data-error="wrong" data-success="right" for="orangeForm-name">Your username or email</label>
+						</div>
+	
+	
+	
+	
+						<div class="md-form mb-4">
+							<i class="fas fa-lock prefix grey-texts"></i>
+							<input type="password" id="orangeForm-pass" class="form-control validate" name="password"
+								required>
+							<label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
+						</div>
+	
+	
+						<div class="text-center form-sm mt-2">
+							<button class="btn btn-dark btn-rounded btn-signup"> Login </button>
+						</div>
+	
+					</div>
+				</div>
+				<div class="container">
+					<p class="pt-1  text-center">New member? 
+						 <a href="{% url 'sign-up' %}" class="blue-text already-sign">Sign Up</a> </p>
+	
+					</div>
+	
+			</div>
+	
+	
+	
+	
+		</div>
+	</form>
+</div>
+
+
+
+
+
+<div class="mobile-br mt-4 black-text " style="display: none;">
+
+
+	<form action="" method="post">
+		{% csrf_token %}
+
+		<div class=" z-depth-3" style="width: 90%;margin: auto;border-radius: .5em;">
+
+				<!--Content-->
+			<br>
+					<!--Header-->
+					<div class=" text-center ">
+						<h3 class="font-weight-bold " 
+						id="myModalLabel" style="font-size: 1.2em;">
+							<strong >
+								Sign In</a></strong></h3>
+					</div>
+
+					<!--Body-->
+					<div class="container text-center mt-5 mb-4" >
+						{% if form.errors %}
+						<div class="alert alert-danger bg-danger card text-white" 
+						style="font-size: .8em;width: 100% !important;margin: auto !important;height: auto !important;overflow: visible;">
+						Invalid Login Credentials
+						</div>
+						{% endif %}
+					</div>
+			
+
+
+
+					<!--Body-->
+					<div class="container">
+						<div class="modal-body">
+			
+							<div class="md-form mb-5">
+
+								<input type="text" id="orangeForm-name" 
+								class="form-control validate create-post-input black-text"
+								 name="username" placeholder="Your username or email"
+									value="{{username}}" required>
+
+							</div>
+
+	
+
+			
+							<div class="md-form mb-4 " style="margin-top: 20%;"> 
+
+								<input type="password" id="orangeForm-pass" 
+								class="form-control validate black-text" 
+								name="password" required placeholder="Your Password">
+
+							</div>
+
+			
+							<div class="text-center form-sm mt-5" style="margin-top: 15% !important;">
+								<button class="btn btn-dark btn-rounded btn-signup" 
+								id="create-community-btn" style="margin: auto !important; width: 10em !important;"> 
+								Login </button>
+							</div>
+			
+						</div>
+					</div>
+				<div class="container mt-5" style="font-size: .8em;">
+
+
+					 <p class="pt-1  text-center">New member? 
+						<a href="{% url 'sign-up' %}" class="blue-text already-sign">Sign Up</a> </p>
+				</div>
+
+
+<br>
+
+		</div>
+		<br>
+	</form>
+
+
+</div>
+
+
+
+{% endblock content %}

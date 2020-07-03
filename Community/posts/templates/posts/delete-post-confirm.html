@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<center>
+    <div class="container">
+
+        DO YOU WANT TO DELETE ?
+
+        <form  method="post">
+
+            {% csrf_token %}
+            
+            <button type="submit" class="btn btn-danger font-weight-bold">
+                REMOVE
+            </button>
+
+            <a href="{% url 'my-posts' %}" class="btn btn-primary font-weight-bold">
+                CANCEL
+            </a>
+
+        </form>
+
+    </div>
+</center>
+
+{% endblock content %}

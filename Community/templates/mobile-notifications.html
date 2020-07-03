@@ -1,0 +1,621 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+{% load customfilter %}
+
+{% block content %}
+
+<div class="bg-dange" style="width: 94%;margin: auto;">
+    <div class="row">
+    
+        {% if today|length or yesterday|length or earlier|length %}
+    
+        <div class="containers " 
+        style="margin-top: -2% !important;margin-bottom: 4%;margin-left: 2%;">
+            <p class="notify-title">
+                {{ "NOTIFICATIONS" | title }}  
+            </p>
+        </div>
+    
+        {% else %}
+    
+        <div class="container text-center ml-4 mt-4" style="margin: auto;">
+            <br>
+            <p class="notify-title text-center container" style="font-size: 1.5rem;margin: auto;">
+                {{ "YOU DON'T HAVE ANY NOTIFICATIONS" | lower | capfirst }}  
+            </p>
+        </div>
+    
+        {% endif %}
+       
+    
+        {% if today|length  %}
+                    
+            <div class="col-md-12 mb-3" style="margin-top: -5% !important;">
+                <p class="notify-sub-head" style="font-size: 1.2em;">
+                    {{ "TODAY" | title }}
+                </p>
+            </div>
+    
+        {% endif %}   
+    
+        {% for notify in today %}
+        <div class="col-md-12">
+            <div class="notification-bubble">
+            {% if notify|type|lower == 'post' %}
+    
+                <a href="{% url 'community-detail' notify.group.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.group.group_profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group.group_profile_pic.url}}"
+                            alt="group-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+
+                            <span class="notify-bold ">
+                                {{notify.author.first_name}} 
+                            </span>
+                            posted something on 
+                            <span class="notify-bold ">
+                                {{notify.group}}
+                            </span><br>
+                            <span class="notify-datetime grey-text ">
+                            <i class="fa fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+    
+    
+                
+            {% elif notify|type|lower == 'comment' %}
+            <a href="{% url 'post-detail' notify.post.slug %}">
+                <div class="media">
+                
+                    {% if notify.author.profile.profile_pic %}
+                        <img class="d-flex mr-2 notification-image mt-0" src="{{notify.author.profile.profile_pic.url}}"
+                        alt="user-icon">   
+    
+                    {% else %}
+    
+                        <div class="notify-no-user-image-icon  mr-2 mt-0">
+                            <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                        </div>
+    
+                    {% endif %}
+                        
+    
+                    <div class="media-body ">
+                        <span class="notify-bold ">{{notify.author.first_name}} </span>
+                        commented on your post
+                        <span class="notify-bold ">{{notify.post}} </span>in
+                        <span class="notify-bold ">{{notify.post.group}} </span>
+                        <br>
+                        <span class="notify-datetime grey-text ">
+                        <i class="fa fa-comment notify-icon"></i>  {{ notify.datetime|naturalday }}</span>
+                    </div>
+                </div>
+            </a>
+
+    
+    
+            {% elif notify|type|lower == 'reply' %}
+            <a href="{% url 'post-detail' notify.comment.post.slug %}">
+                <div class="media">
+                
+                    {% if notify.user.profile.profile_pic %}
+                        <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile.profile_pic.url}}"
+                        alt="user-icon">   
+    
+                    {% else %}
+    
+                        <div class="notify-no-user-image-icon  mr-2 mt-0">
+                            <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                        </div>
+    
+                    {% endif %}
+                        
+    
+                    <div class="media-body ">
+                        <span class="notify-bold ">{{notify.user.first_name}} </span>
+    
+                        
+                        {% if notify.reply_for == 'comment' %}
+                            replied to your comment for the post 
+                            <span class="notify-bold">{{ notify.comment.post }}</span> in 
+                            <span class="notify-bold">{{ notify.comment.post.group }}</span> <br>
+                            <span class="notify-datetime grey-text ">
+                                <i class="far fa-comment"></i>   {{ notify.datetime|naturalday }}</span>
+                        {% else %}
+                            replied you <br>
+                            <span class="notify-datetime grey-text ">
+                                <i class="far fa-comment-dots notify-icon"></i>   {{ notify.datetime|naturalday }}</span>
+                        {% endif %}
+                            
+                        <br>
+    
+                    </div>
+                </div>
+            </a>
+
+    
+    
+            {% elif notify|type|lower == 'group' %}
+            <a href="{% url 'community-detail' notify.slug %}">
+                <div class="media">
+                
+                    {% if notify.group_profile_pic %}
+                        <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group_profile_pic.url}}"
+                        alt="group-icon">   
+        
+                    {% else %}
+        
+                        <div class="notify-no-user-image-icon  mr-2 mt-0">
+                            <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                        </div>
+        
+                    {% endif %}
+                        
+        
+                    <div class="media-body ">
+                        <span class="notify-bold ">
+                            {{notify.created_by.first_name}} 
+                        </span>
+                        created a new community
+                        <span class="notify-bold ">
+                            {{notify.name}}
+                        </span><br>
+                        <span class="notify-datetime grey-text ">
+                        <i class="far fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                    </div>
+                </div>
+            </a>
+
+    
+    
+    
+            {% else %}
+            <a href="{% url 'post-detail' notify.post.slug %}">
+                <div class="media">
+                
+                    {% if notify.user.profile_pic %}
+                        <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile_pic.url}}"
+                        alt="user-icon">   
+    
+                    {% else %}
+    
+                        <div class="notify-no-user-image-icon  mr-2 mt-0">
+                            <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                        </div>
+    
+                    {% endif %}
+                        
+    
+                    <div class="media-body ">
+                        <span class="notify-bold ">{{notify.user.first_name}} </span>
+                            liked your post 
+                        <span class="notify-bold ">{{notify.post}} </span>
+                        <br>
+                        <span class="notify-datetime grey-text ">
+                        <i class="fas fa-heart notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                    </div>
+                </div>
+            </a>
+
+            {% endif %}
+            </div>
+        </div>
+    
+        {% endfor %}
+         
+            
+    
+            {% if yesterday|length  %}
+
+            <div class="col-md-12 mb-3" style="margin-top: -5% !important;">
+                <p class="notify-sub-head" style="font-size: 1.2em;">
+                    {{ "YESTERDAY" | title }}
+                </p>
+            </div>
+    
+            {% endif %}   
+            
+            {% for notify in yesterday %}
+            <div class="col-md-12">
+                <div class="notification-bubble">
+                {% if notify|type|lower == 'post' %}
+    
+                    <a href="{% url 'community-detail' notify.group.slug %}">
+                        <div class="media">
+                        
+                            {% if notify.group.group_profile_pic %}
+                                <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group.group_profile_pic.url}}"
+                                alt="group-icon">   
+                
+                            {% else %}
+                
+                                <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                    <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                                </div>
+                
+                            {% endif %}
+                                
+                
+                            <div class="media-body ">
+                                <span class="notify-bold ">
+                                    {{notify.author.first_name}} 
+                                </span>
+                                posted something on 
+                                <span class="notify-bold ">
+                                    {{notify.group}}
+                                </span><br>
+                                <span class="notify-datetime grey-text ">
+                                   <i class="fa fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                            </div>
+                        </div>
+                    </a>
+ 
+    
+            
+                    
+                {% elif notify|type|lower == 'comment' %}
+                <a href="{% url 'post-detail' notify.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.author.profile.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.author.profile.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body">
+                            <span class="notify-bold ">{{notify.author.first_name}} </span>
+                            commented on your post
+                            <span class="notify-bold ">{{notify.post}} </span>in
+                            <span class="notify-bold ">{{notify.post.group}} </span>
+                            <br>
+                            <span class="notify-datetime grey-text ">
+                              <i class="fa fa-comment notify-icon"></i>  {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+            
+            
+                {% elif notify|type|lower == 'reply' %}
+                <a href="{% url 'post-detail' notify.comment.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.user.profile.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body">
+                            <span class="notify-bold ">{{notify.user.first_name}} </span>
+    
+                            
+                            {% if notify.reply_for == 'comment' %}
+                                replied to your comment for the post 
+                                <span class="notify-bold">{{ notify.comment.post }}</span> in 
+                                <span class="notify-bold">{{ notify.comment.post.group }}</span> <br>
+                                <span class="notify-datetime grey-text ">
+                                    <i class="far fa-comment"></i>   {{ notify.datetime|naturalday }}</span>
+                            {% else %}
+                                replied you <br>
+                                <span class="notify-datetime grey-text ">
+                                    <i class="far fa-comment-dots notify-icon"></i>   {{ notify.datetime|naturalday }}</span>
+                            {% endif %}
+                                
+                            <br>
+    
+                        </div>
+                    </div>
+                </a>
+
+            
+    
+                {% elif notify|type|lower == 'group' %}
+                <a href="{% url 'community-detail' notify.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.group_profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group_profile_pic.url}}"
+                            alt="group-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">
+                                {{notify.created_by.first_name}} 
+                            </span>
+                            created a new community
+                            <span class="notify-bold ">
+                                {{notify.name}}
+                            </span><br>
+                            <span class="notify-datetime grey-text">
+                            <i class="far fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+         
+    
+    
+    
+                {% else %}
+                <a href="{% url 'post-detail' notify.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.user.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">{{notify.user.first_name}} </span>
+                                liked your post 
+                            <span class="notify-bold ">{{notify.post}} </span>
+                            <br>
+                            <span class="notify-datetime grey-text">
+                               <i class="fas fa-heart notify-icons"></i> {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+                {% endif %}
+                </div>
+            </div>
+    
+            {% endfor %}
+        
+        
+    
+            
+            {% if earlier|length  %}
+
+            <div class="col-md-12 mb-3" style="margin-top: -5% !important;">
+                <p class="notify-sub-head" style="font-size: 1em;">
+                    {{ "EARLIER" | title }}
+                </p>
+            </div>
+    
+            {% endif %}
+    
+    
+                
+            {% for notify in earlier %}
+            <div class="col-md-12">
+                <div class="notification-bubble">
+                {% if notify|type|lower == 'post' %}
+    
+                    <a href="{% url 'community-detail' notify.group.slug %}">
+                        <div class="media">
+                        
+                            {% if notify.group.group_profile_pic %}
+                                <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group.group_profile_pic.url}}"
+                                alt="group-icon">   
+                
+                            {% else %}
+                
+                                <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                    <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                                </div>
+                
+                            {% endif %}
+                                
+                
+                            <div class="media-body ">
+                                <span class="notify-bold ">
+                                    {{notify.author.first_name}} 
+                                </span>
+                                posted something on 
+                                <span class="notify-bold ">
+                                    {{notify.group}}
+                                </span><br>
+                                <span class="notify-datetime grey-text ">
+                                   <i class="fa fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                            </div>
+                        </div>
+                    </a>
+
+    
+            
+                    
+                {% elif notify|type|lower == 'comment' %}
+                <a href="{% url 'post-detail' notify.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.author.profile.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.author.profile.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">{{notify.author.first_name}} </span>
+                            commented on your post
+                            <span class="notify-bold ">{{notify.post}} </span>in
+                            <span class="notify-bold ">{{notify.post.group}} </span>
+                            <br>
+                            <span class="notify-datetime grey-text ">
+                              <i class="fa fa-comment notify-icon"></i>  {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+            
+            
+                {% elif notify|type|lower == 'reply' %}
+                <a href="{% url 'post-detail' notify.comment.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.user.profile.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">{{notify.user.first_name}} </span>
+    
+                            
+                            {% if notify.reply_for == 'comment' %}
+                                replied to your comment for the post 
+                                <span class="notify-bold">{{ notify.comment.post }}</span> in 
+                                <span class="notify-bold">{{ notify.comment.post.group }}</span> <br>
+                                <span class="notify-datetime grey-text">
+                                    <i class="far fa-comment"></i>   {{ notify.datetime|naturalday }}</span>
+                            {% else %}
+                                replied you <br>
+                                <span class="notify-datetime grey-text">
+                                    <i class="far fa-comment-dots notify-icon"></i>   {{ notify.datetime|naturalday }}</span>
+                            {% endif %}
+                                
+                            <br>
+    
+                        </div>
+                    </div>
+                </a>
+ 
+            
+    
+                
+                {% elif notify|type|lower == 'group' %}
+                <a href="{% url 'community-detail' notify.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.group_profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.group_profile_pic.url}}"
+                            alt="group-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-users" id="notify-no-community-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">
+                                {{notify.created_by.first_name}} 
+                            </span>
+                            created a new community
+                            <span class="notify-bold ">
+                                {{notify.name}}
+                            </span><br>
+                            <span class="notify-datetime grey-text ">
+                            <i class="far fa-bell notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+        
+    
+    
+                {% else %}
+                <a href="{% url 'post-detail' notify.post.slug %}">
+                    <div class="media">
+                    
+                        {% if notify.user.profile_pic %}
+                            <img class="d-flex mr-2 notification-image mt-0" src="{{notify.user.profile_pic.url}}"
+                            alt="user-icon">   
+            
+                        {% else %}
+            
+                            <div class="notify-no-user-image-icon  mr-2 mt-0">
+                                <i class="fa fa-user" id="notify-no-user-image-icons"></i>
+                            </div>
+            
+                        {% endif %}
+                            
+            
+                        <div class="media-body ">
+                            <span class="notify-bold ">{{notify.user.first_name}} </span>
+                                liked your post 
+                            <span class="notify-bold ">{{notify.post}} </span>
+                            <br>
+                            <span class="notify-datetime grey-text ">
+                               <i class="fa fa-heart notify-icon"></i> {{ notify.datetime|naturalday }}</span>
+                        </div>
+                    </div>
+                </a>
+
+                {% endif %}
+                </div>
+            </div>
+    
+            {% endfor %}
+    
+    
+        </div>
+    
+    </div>
+
+</div>
+
+
+<br><br>
+
+{% endblock %}

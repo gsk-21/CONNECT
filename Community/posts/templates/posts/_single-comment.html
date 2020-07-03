@@ -1,0 +1,227 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load shortnaturaltime %}
+
+	
+
+ <a href="{% url 'about-user' comment.author.pk %}">
+	<h6 class="mt-0 post-detail-cmt-author-name"
+	style="margin-bottom:.5%;margin-top: -.2% !important;">
+		{{comment.author.first_name}}</h6>
+</a>
+
+<div class="post-detail-cmt-message">
+	{{ comment.comment}}
+</div>
+
+<p class="grey-text post-detail-reply-delete" style="">
+	{{comment.commented_on  | shortnaturaltime }}
+	<span class="container text-center ">
+		<a class=" grey-text post-detail-reply" href="" id='reply-to-{{comment.pk}}'
+		data-pk="{{comment.pk}}" style="cursor: pointer !important;">Reply</a> </span>
+
+	{% if comment.author == user %}
+
+	<span class="container text-center ">
+		<a class=" grey-text post-detail-delete" href="" id="delete-comment-{{ comment.pk }}" 
+		 data-comment_pk="{{ comment.pk }}" >Delete</a> 
+	</span>
+
+	{% endif %}
+
+</p>
+
+
+
+{% if comment.replies.all %}
+	<div class="ml-4 view-hide-container">
+
+
+		<a href="" id="view-replies-{{ comment.pk}}" 
+		class="post-detail-view">
+		   view {{comment.replies.all.count}}
+		   {% if comment.replies.all.count == 1 %}
+			   reply 
+		   {% else %}
+			   replies
+		   {% endif %}
+		</a>
+   
+
+	   <a href="" id="hide-replies-{{ comment.pk }}" 
+	   class="post-detail-hide" style="display: none ;margin-bottom: 8%;">
+		   Hide 
+		   {% if comment.replies.all.count == 1 %}
+			   reply 
+		   {% else %}
+			   replies
+		   {% endif %}
+	   </a>
+
+	</div>
+
+
+{% else %}
+
+<div class="post-detail-mobile-br" ></div>
+
+{% endif %}
+	
+
+
+
+<div class="replies " id="replies-to-{{ comment.pk }}" style="display: none;">
+
+	{% for reply in comment.replies.all %}
+
+	{% include 'posts/_single-reply.html' %}
+
+	{% endfor %}
+
+
+</div>
+
+
+
+<script>
+
+
+
+$('#reply-to-{{comment.pk}}').on('click',function(event){
+
+	//window.scrollTo(100, 500)
+	event.preventDefault()
+	//window.scrollTo(0, 0);
+	window.scrollTo(100, 200)
+
+	var comment_pk = this.dataset.pk
+	var comment_form = $('#comment-form_{{post.slug}}')[0]
+	comment_form.setAttribute('name', 'reply')
+	var form_text_area = $('#comment-form_{{post.slug}}')[0][2]
+	form_text_area.value = '@{{comment.author.first_name}} '
+	form_text_area.focus()
+
+
+
+	$('#comment-form_{{post.slug}}').on('submit',function(event){
+
+		event.preventDefault()
+		this.setAttribute('name','reply')
+		let reply_message = this[2].value
+		this[2].value = ''
+		let reply_to_pk = "{{comment.author.pk}}"
+		let reply_for = 'comment'
+			if((reply_message.split(" ")[0][0]) == "@"){
+
+				let temp = reply_message.split(" ")
+				temp[0] = ""
+				reply_message = temp.join(" ")	
+			}
+		if(reply_message != ''){
+		reply_comment(comment_pk, reply_message,reply_to_pk,reply_for)
+		this.setAttribute('name', '')
+		}
+
+
+	})
+})
+
+function reply_comment(comment_pk, reply_message,reply_to_pk,reply_for){
+
+	$.ajax(
+		{
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: "{% url 'reply-comment' %}",
+			type: "POST",
+			data: {
+				reply_message: reply_message,
+				comment_pk: comment_pk,
+				reply_to_pk:reply_to_pk,
+				reply_for:reply_for,
+			},
+
+			success: function (json) {
+				console.log(json)
+				console.log("Success")
+
+				location.reload()
+
+			},
+			error: function (xhr, errmsg, err) {
+				console.log("Error!")
+				console.log(xhr.status + ":" + xhr.responseText)
+			}
+
+		}
+	)
+}
+
+
+
+
+$('#delete-comment-{{ comment.pk }}').on('click',function(event){
+	event.preventDefault()
+	comment_pk = this.dataset.comment_pk
+	delete_comment(comment_pk)
+})
+
+function delete_comment(comment_pk){
+
+	$.ajax({
+		headers: { "X-CSRFToken": '{{csrf_token}}' },
+		url:"{% url 'delete-comment' %}",
+		type:"POST",
+		data:{
+			comment_pk:comment_pk,
+		},
+
+		success: function (json) {
+
+			location.reload()
+			//console.log(json)
+			//console.log("Comment deleted")
+		},
+		error: function (xhr, errmsg, err) {
+			console.log("Error!")
+			console.log(xhr.status + ":" + xhr.responseText)
+		}
+
+	})
+
+}
+
+
+
+
+
+if(document.querySelector('#view-replies-{{ comment.pk }}')){
+
+	toggle_replies()
+}
+
+
+function toggle_replies(){
+	document.querySelector('#view-replies-{{ comment.pk }}').addEventListener('click', function (event) {
+		event.preventDefault()
+		document.querySelector('#replies-to-{{ comment.pk }}').style.display = 'block'
+		document.querySelector('#hide-replies-{{ comment.pk }}').style.display = 'block'
+		this.style.display = 'none'
+
+	})
+
+	document.querySelector('#hide-replies-{{ comment.pk }}').addEventListener('click', function (event) {
+		event.preventDefault()
+		document.querySelector('#replies-to-{{ comment.pk }}').style.display = 'none'
+		document.querySelector('#view-replies-{{ comment.pk }}').style.display = 'block'
+		this.style.display = 'none'
+	})
+}
+
+
+</script>
+
+
+
+

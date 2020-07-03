@@ -1,0 +1,88 @@
+<div class="modal fade temp" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content card gradient-card" 
+		style="margin-top: 20%;border-radius: .5rem;">
+
+			<div class="modal-body mx-3">
+
+				<div class="md-form mb-5">
+					<center>	
+						<form action="{% url 'update-profile-pic' %}" method="post" id="profile-pic-form"
+							enctype="multipart/form-data" style="display: none;">
+							{% csrf_token %}
+
+							<div class='file-input update-profile-img-btn'>
+								<input type='file' name="new-profile-pic" id="upload-profile-image" required>
+								<span class=' btn btn-rounded btn-primary  edit-profile font-weight-bold'>Choose new profile
+									image</span>
+								<span class='label file-selection' data-js-label>No file selected</span>
+							</div>
+
+							<br><br>
+							<button type="submit" id="select-img-button"
+								class="btn btn-rounded btn-primary font-weight-bold  edit-profile">
+								UPLOAD
+							</button>
+
+
+							{% if user.profile.profile_pic  %}
+							<br><br>
+							<button class="btn btn-rounded btn-primary font-weight-bold  edit-profile" type="button"
+								onclick="cancel_update_profile_pic()">CANCEL</button>
+
+							{% else %}
+							<br><br>
+							<button class="btn btn-rounded btn-primary font-weight-bold  edit-profile" type="button"
+								onclick="cancel_set_profile_pic()">CANCEL</button>
+							{% endif %}
+
+						</form>
+					</center>
+				</div>
+
+				{% if user.profile.profile_pic %}
+				<div class="md-form mb-5">
+					<center>
+						<button type="button" onclick="update_profile_pic();" id="select-img-button"
+							class="btn btn-rounded btn-primary font-weight-bold 
+							profile-pic-btn-update  edit-profile">
+							UPDATE PROFILE PICTURE
+						</button>
+					</center>
+				</div>
+
+				<div class="md-form mb-4  profile-pic-btn-remove">
+					<center>
+						<a href="{% url 'delete-profile-pic' %}" 
+						class="btn btn-rounded btn-danger font-weight-bold  edit-profile">
+							REMOVE PROFILE PICTURE
+						</a>
+					</center>
+					<br>
+				</div>
+
+				{% else %}
+
+				<div class="md-form mb-5">
+					<center>
+
+						<button type="button" onclick="set_profile_pic();"
+							class="btn btn-rounded btn-primary  edit-profile
+							font-weight-bold profile-pic-btn-set">
+							SET PROFILE PICTURE
+						</button>
+
+					</center>
+
+				</div>
+
+				{% endif %}
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>

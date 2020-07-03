@@ -1,0 +1,277 @@
+
+ .nav-item-custom{
+    font-size: 1rem;
+  }
+ 
+ nav
+ {
+ 
+   width: 100%;
+   margin: auto;
+   box-shadow: none !important;
+   background-color: white;
+ }
+
+ .navbar-brand-custom{
+   font-size: 1.7rem;
+   /* text-shadow: 1px 0 currentColor; */
+   letter-spacing: .1rem;
+   font-family: 'Jost', sans-serif !important;
+   transform: scale(1, 1.5);
+  font-weight: bold;
+  
+}
+ 
+ .nav-username-container{
+   padding-left: .1rem;
+   padding-right: .5rem;
+   border-radius: 2rem;
+
+   float: left !important;
+   font-family: 'Jost', sans-serif !important;
+
+  margin-top: -1%;
+  margin-bottom: -3%;
+ }
+ 
+ .nav-username-container:hover{
+ 
+   color: white !important;
+   background-color: gainsboro;
+   background-color: whitesmoke;
+   /* box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important; */
+ }
+ 
+ 
+ 
+ .nav-profile-image{
+   width: 1.8rem;
+   height: 1.8rem;
+   object-fit: cover;
+
+ }
+ 
+.nav-no-profile-image{
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+ 
+
+  background-color: gainsboro;
+}
+
+#nav-no-profile-image{
+  color: white !important;
+  font-size: .9rem !important;
+
+}
+
+ .nav-username{
+
+   margin-left: .1rem;
+   font-weight: bold;
+   font-size: .8rem;
+   color: black; 
+   /* text-shadow: 1px 0 currentColor; */
+   letter-spacing: 1px;
+
+ }
+ 
+ 
+ .nav-dropdown{
+   background-color: white;
+   border: none;
+ }
+ 
+ .nav-dropdown-custom-item{
+   width: 90%;
+   margin-top: .3rem;
+   margin-bottom: .3rem;
+   font-size: .8rem;
+   font-weight: bold;
+   font-family: 'Jost', sans-serif ;
+ }
+ 
+ .nav-dropdown-custom-item:hover{
+   background-color: black;
+   color: white !important;
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;
+   font-weight: bold !important;
+   border-radius: 5rem;
+ }
+ 
+ 
+ 
+ .nav-element-custom:hover{
+ background-color: rgba(220, 220, 220, 0.541);
+   border-radius: 7px;
+   border-radius: .5rem;
+   color: black;
+
+ }
+ 
+ .nav-element-custom{
+   padding: .5%;
+ color: black;
+ font-size: 1.1rem;
+ }
+ 
+ .nav-link-custom{
+   color: black !important;
+ }
+ 
+
+ .nav-link-icon{
+   border-top-left-radius: 5rem;
+   border-top-right-radius: 5rem;
+   border-bottom-left-radius: 5rem;
+   border-bottom-right-radius: 5rem;
+   background-color: gainsboro !important;
+ }
+ 
+ 
+ 
+ [data-title]:hover::before {
+ 
+   content: attr(data-title);
+   position: absolute;
+   display: inline-block;
+   font-size: .7rem;
+   padding-right: 0rem;
+   padding: 1%;
+   padding-left: 2%;
+   padding-right: 2%;
+   border-radius: 6px;
+   background-color: rgba(0, 0, 0, 0.788);
+   color: white;
+   font-weight: bold;
+   margin-top:3.2rem;
+   margin-right: 5rem;
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+   
+   display: block;
+ text-align: center;
+ 
+ }
+ 
+ 
+ [create-community-title]:hover::before {
+ 
+   content: attr(create-community-title);
+   position: absolute;
+   display: inline-block;
+   font-size: .8rem;
+   display: block;
+   padding-right: 0rem;
+   padding: 1%;
+   padding-left: 2%;
+   padding-right: 2%;
+   border-radius: 6px;
+   background-color: rgba(0, 0, 0, 0.788);
+   color: white;
+   font-weight: bold;
+   margin-top:2.9rem;
+ text-align: center;
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+ }
+ 
+
+ 
+
+ 
+ [notification-title]:hover::before {
+ 
+  content: attr(notification-title);
+  position: absolute;
+  display: inline-block;
+  font-size: .8rem;
+  display: block;
+  padding-right: 0rem;
+  padding: 20%;
+
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.788);
+  color: white;
+  font-weight: bold;
+  margin-top:2.9rem;
+text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+
+ .rnd-icon /* or selector a .fa */
+   {
+   font-size:.7rem;
+   border-radius: 50%;
+   color: white;
+   color: black;
+   background-color: gainsboro;
+   width: 2.2rem;
+   text-align: center;
+     transition:0.5s;
+ 
+ }
+ 
+ 
+ .rnd-icon:hover{
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+   color: black;
+ }
+ 
+ 
+ 
+ .dropdown-custom{
+
+  min-width: 29rem !important;
+  overflow: auto;
+  margin: auto;
+  scrollbar-width: none;
+  max-height: 32rem !important;
+
+  border-radius: .7rem !important;
+
+ }
+
+
+
+
+
+/* -------------------------- NAV GUEST USER ------------------- */
+
+.nav-element-custom-unauth{
+  padding: .5%;
+  color: black;
+  font-size: .9rem;
+  font-family: 'Jost', sans-serif !important;
+  font-weight: bold;
+
+}
+  
+ .nav-element-custom-unauth:hover{
+  background-color: rgba(220, 220, 220, 0.541);
+    border-radius: 7px;
+    border-radius: .5rem;
+    color: black;
+
+ 
+  }
+
+  .sign-btn{
+    font-family: 'Jost', sans-serif !important;
+  }
+  
+
+  .nav-background{
+    border-bottom: 3px solid black;
+  }
+  .nav-background:hover{
+    background: none;
+    border-radius: 0px;
+  }
+
+
+  .nav-profile-background{
+    background-color: whitesmoke;
+
+  }
+
+

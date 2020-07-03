@@ -1,0 +1,140 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load customfilter %}
+
+
+
+
+<p class="home-users-head " id="post-from-other"
+style="letter-spacing: .8px;margin-left: 5%;font-size: 1.2rem;">
+   {{ "Posts from other communities " | upper}}
+</p>
+
+
+
+
+<div class="mt-0 " >
+
+    {% for post  in non_following_posts %}
+
+    <div class="col mb-4 community-detail-post-card " 
+    id="remove-ml" style="margin-left:2%;">
+        <!-- Card -->
+        <div class="card bg-darks" >
+
+            <div class="card-body" style="margin-top: -.3rem;">
+
+                <!--Title-->
+
+                <div class="containers">
+                    
+                    <div class="media ">
+
+                        {% if post.group.group_profile_pic %}
+                        <div style="background-image: url({{post.group.group_profile_pic.url}});"
+                            class="rnd-img" alt="avatar image ">
+                        </div>
+
+                        {% else %}
+                        <div class="home-post-community-icon" >
+                            <i class="fa fa-users " id="home-post-community-icon" ></i>
+                        </div>
+
+                        {% endif %}
+                        <h5 class="mt-0  home-post-community-name">
+                            <a href="{% url 'community-detail' post.group.slug %}">
+                                {{post.group | upper}}</a> <br> 
+                            <span class="home-post-author"> 
+                                Post by <a href="{% url 'about-user' post.author.pk %}"
+                                           class="home-post-author-name">
+                                    {{post.author.first_name | upper }} </a>
+                            </span>
+                         </h5>
+
+                    </div>
+                </div>
+                <!--Title-->
+            </div>
+
+            <!--Card image-->
+
+            {% if post.post_pic %}
+
+            <div class="containers view overlay" style="margin-top: -1.5%;">
+
+                <img class="card-img-top card post-detail-image"
+                    style="box-shadow: none;border-radius: 0px;width: auto;height: auto;"
+                    src="{{post.post_pic.url}}" alt="Card image cap">
+                <a href="{% url 'post-detail' post.slug%}">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+                
+            </div>
+            {% include 'posts/_home-post-like.html' %}
+            {% endif %}
+
+
+
+            <div class="card-body">
+                {% if post.post_pic %}
+                <div class="post-card-content-container view overlay bg-dangers" 
+                style="margin-top:-2%">
+                {% else %}
+                <div class="post-card-content-container view overlay bg-dangers" 
+                style="margin-top:-4%">
+                {% endif %}
+
+                    <p class="card-title post-title">{{post.title}}</p>
+                    <!--Text-->
+                    <p class="card-text post-message
+                     home-post-message" id="home-post-message">{{post.message | truncatewords:50 }}</p>
+                    
+                     {% if not post.post_pic  %}
+                     <div class=" home-like-container-no-pic"
+                      style="margin-left: -2.5%;margin-bottom: 3%;">
+                        {% include 'posts/_home-post-like.html' %}
+                    </div>
+                     {% endif %}
+
+                    {% if post.comments.all.count %}
+
+                    <div class="home-cmt-count black-text">
+                        {{post.comments.all.count}}
+                         {{ "Comment" | upper}}{{post.comments.all.count | pluralize | upper}}
+                    </div>
+
+                    {% endif %}
+                    <div class="home-guest-posted-on grey-text">
+                        {{post.posted_on | naturalday}}
+                    </div>
+                    <!-- <a href="{% url 'post-detail' post.slug%}">
+                        <div class="mask rgba-white-slight"></div>
+                    </a> -->
+                </div>
+            </div>
+
+        </div>
+        <!-- Card -->
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% if not user.is_authenticated %}
+   
+<br>  
+<div class="text-center grey-text font-weight-bold " 
+id="join-text" style="margin-top: -5%;">
+    Login to view more posts..
+</div>
+
+{% endif %}
+    
+<div class="col mobile-br" style="display: none;"> 
+    <br><br>
+</div> 
+

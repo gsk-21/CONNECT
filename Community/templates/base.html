@@ -1,0 +1,535 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- ----------------- JS ------------------ -->
+
+  <script src="{% static 'js/base/jquery-3.5.1.js' %}"></script>
+  <script src="{% static 'js/base/bootstrap.js' %}"></script>
+  <script src="{% static 'js/base/bootstrap.bundle.js' %}"></script>
+  <!-- 
+    <script src="https://code.jquery.com/jquery-3.5.1.js" 
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script> -->
+
+  <script src="{% static 'js/base/mdb.js' %}"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/navigation.js' %}"></script>
+
+  <script src="{% static 'font-awesome/js/regular.js' %}"></script>
+  <script src="{% static 'font-awesome/js/all.js' %}"></script>
+  <script src="{% static 'font-awesome/js/brands.js' %}"></script>
+  <script src="{% static 'font-awesome/js/solid.js' %}"></script>
+  <script src="{% static 'font-awesome/js/v4-shims.js' %}"></script>
+  <!-- <script src="{% static 'font-awesome/js/conflict-detection.js' %}"></script> -->
+  <script src="{% static 'font-awesome/js/fontawesome.js' %}"></script>
+  <!-- -------------- CSS ------------- -->
+
+  <link rel="stylesheet" href="{% static 'css/base/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/bootstrap-reboot.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/bootstrap-grid.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/mobile.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/base/mdb.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+  <link rel="stylesheet" href="{% static 'css/profile-page.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-extra.css' %}">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+  <link rel="stylesheet" href="{% static 'font-awesome/css/all.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/brands.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/solid.css' %}">
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;800&family=Source+Sans+Pro&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital@1&display=swap" rel="stylesheet">
+
+  <title>CONNECT</title>
+
+</head>
+
+<body>
+
+  <!-- <div class="containers bg-success  sticky-top" style="width: 90%;margin: auto;"> -->
+
+
+  <!-- 
+1 - Navbar with brand left, centered links and right aligned links.
+    The center links collapse into the mobile menu and rightside links
+    show underneath
+-->
+  <nav class="navbar navbar-expand-md  sticky-top  bg-primarys " id="desktop-nav">
+
+
+
+    <div class="d-flex w-50  ">
+
+      <a class="navbar-brand mr-0  navbar-brand-custom" href="{% url 'home'%}">
+
+          CONNECT 
+
+      </a>
+
+      <button class="navbar-toggler  " type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <i class="fa fa-bars"></i>
+      </button>
+
+    </div>
+
+
+    {% if user.is_authenticated %}
+
+    <div class="navbar-collapse collapse justify-content-center " id="collapsingNavbar">
+      <ul class="navbar-nav bg-dangers" id="nav-center">
+        <!-- ----------------------- HOME TAB ----------------------------- -->
+
+        <li class="nav-item active  ml-lg-3 mr-lg-3 active
+        {% if request.resolver_match.url_name == 'home' %}nav-background{% endif %}
+        nav-element-custom " data-title="HOME">
+          <a class="nav-link pr-lg-4 pl-lg-4 nav-link-custom" href="{% url 'home'%}">
+            <span>
+              <i class="fa fa-home " aria-hidden="true"></i>
+            </span>
+          </a>
+        </li>
+
+
+        <!-- ------------------------ MY POSTS TAB----------------------           -->
+
+        <li class="nav-item  ml-lg-5 mr-lg-5 nav-element-custom 
+        {% if request.resolver_match.url_name == 'my-posts' %}nav-background{% endif %}"
+         data-title="MY POSTS">
+          <a class="nav-link pr-lg-4 pl-lg-4 nav-link-custom" href="{% url 'my-posts' %}">
+            <i class="fas fa-stream"></i>
+          </a>
+        </li>
+
+
+        <!-- ------------ COMMUNITY TAB ---------------           -->
+
+        <li class="nav-item ml-lg-3 mr-lg-3 nav-element-custom
+        {% if request.resolver_match.url_name == 'communities' %}nav-background{% endif %} "
+         data-title="COMMUNITY">
+          <a class="nav-link pr-lg-4 pl-lg-4 nav-link-custom" href="{% url 'communities' %}">
+            <i class="fas fa-users"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ---------------------- RIGHT ------------------------------ -->
+
+
+    <span class="navbar-text font-weight-bold text-truncates  w-50  text-right bg-successs">
+
+
+      <ul class="navbar-nav ml-auto nav-flex-icons float-right ">
+
+        <li class="nav-item ml-lg-2 mr-lg-2 bg-warnings 
+        {% if request.resolver_match.url_name == 'my-profile' %}nav-profile-background{% endif %}
+        nav-username-container float-left">
+          <a class="nav-link " href="{%url 'my-profile' %}">
+
+            {% if user.profile.profile_pic %}
+
+            <img src="{{user.profile.profile_pic.url}}" 
+            class="rounded-circle z-depth-1 nav-profile-image"
+              alt="avatar image">
+
+            {% else %}
+
+            <div class="nav-no-profile-image float-left rounded-circle mr-lg-1
+            text-center">
+              <span id="nav-no-profile-image">
+                <i class="fa fa-user pt-md-1"></i></span>
+            </div>
+
+            {% endif %}
+
+            <span class="nav-username">
+              {{ name  | truncatechars:12 }}</span>
+
+          </a>
+
+        </li>
+
+
+        <!-- ----------------------------- CREATE COMMUNITY TAB ------------------------- -->
+
+
+        <li class="nav-item nav-icon-custom mr-lg-2 ml-lg-2  " 
+        create-community-title="CREATE NEW COMMUITY">
+          <a class="nav-link rnd-icon mr-lg-2 ml-lg-2 z-depth" 
+          href="{% url 'create-community' %}">
+            <i class="fa fa-plus "></i>
+
+          </a>
+        </li>
+
+
+        <li class="nav-item nav-icon-custom mr-lg-2 ml-lg-2  nav-item dropdown " 
+        notification-title="NOTIFICATIONS">
+          <a class="nav-link  rnd-icon mr-lg-2 ml-lg-2 z-depth" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-bell "></i>
+            <span class="font-weight-bold">
+              
+              {% if today|length %}
+                {{today|length}}
+              {% endif %}
+                
+            </span>
+
+          </a>
+
+
+          <div class="dropdown-menu dropdown-menu-right dropdown-default
+            nav-dropdown z-depth-1 text-center dropdown-primary dropdown-custom"
+             aria-labelledby="navbarDropdownMenuLink">
+
+              {% include 'notifications.html' %}
+
+          </div>
+
+        </li>
+
+        <li class="nav-item dropdown  nav-icon-custom mr-lg-2 ml-lg-2 ">
+          <a class="nav-link  rnd-icon mr-lg-2 ml-lg-2 z-depth" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-caret-down  "></i>
+          </a>
+
+          <div class="dropdown-menu dropdown-menu-right dropdown-default
+                  nav-dropdown z-depth-1 text-center dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item nav-dropdown-custom-item" href="{% url 'my-profile' %}">MY PROFILE</a>
+            <a class="dropdown-item nav-dropdown-custom-item" href="{% url 'logout' %}">LOGOUT</a>
+
+          </div>
+        </li>
+
+
+      </ul>
+
+
+    </span>
+
+
+ <!-- ----------------- NON-AUTHENTICATED -------------------------    -->
+
+
+  {% else %}
+
+  <div class="navbar-collapse collapse justify-content-center " id="collapsingNavbar">
+    <ul class="navbar-nav ">
+      <!-- ----------------------- HOME TAB ----------------------------- -->
+
+      <li class="nav-item active  ml-lg-3 mr-lg-3  
+      nav-element-custom-unauth"
+      style="width: 8rem;" data-title="HOME">
+        <a class="nav-link pr-lg-4 pl-lg-4 nav-link-custom" href="{% url 'home'%}">
+          <span>
+            <i class="fa fa-home " aria-hidden="true"></i> HOME
+          </span>
+        </a>
+      </li>
+
+
+
+      <!-- ------------ COMMUNITY TAB ---------------           -->
+
+      <li class="nav-item ml-lg-3 mr-lg-3  
+      nav-element-custom-unauth" 
+      data-title="COMMUNITY" style="width: 10rem;">
+        <a class="nav-link  nav-link-custom" href="{% url 'communities' %}">
+          <i class="fas fa-users"></i> COMMUNITIES
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ---------------------- RIGHT ------------------------------ -->
+
+  <span class="navbar-texts font-weight-bold text-truncates  w-50  text-right ">
+
+    <ul class="navbar-nav ml-auto nav-flex-icons float-right ">
+
+
+
+      <li class="nav-item nav-icon-custom mr-lg-2 ml-lg-2  " >
+        <a href="{% url 'sign-up' %}" 
+        class="btn btn-dark btn-sm font-weight-bold btn-rounded sign-btn">
+          Sign Up
+        </a>
+      </li>
+
+      <li class="nav-item nav-icon-custom mr-lg-2 ml-lg-2  " >
+            <a href="{% url 'login' %}" 
+            class="btn btn-dark btn-sm font-weight-bold btn-rounded sign-btn">
+              Login
+            </a>
+      </li>
+
+    </ul>
+
+  </span>
+
+    {% endif %}
+
+  </nav>
+
+
+
+
+
+
+
+
+<!--Navbar -->
+<nav class="mb-12 navbar navbar-expand-md navbar-dark  
+ fixed-top  z-depth-1" id="mobile-nav-top" style="background-color: black;">
+  <a class="navbar-brand navbar-brand-custom black-texts " href="{% url 'home'%}">
+    CONNECT
+  </a>
+
+  {% if user.is_authenticated %}
+
+  <ul class="navbar-nav ml-auto nav-flex-icons ">
+
+
+
+
+    <li class="nav-item">
+      <a class="nav-link waves-effect waves-light" href="{% url 'notifications' %}">
+        <span class="black-texts mr-5" style="font-size: .8em;">
+          <i class="far fa-bell  "></i>
+          <span style="font-size: .7em;">
+          
+            {% if today|length %}
+            {{today|length}}
+          {% endif %}
+          
+          </span>
+        </span>
+      </a>
+    </li>
+
+    <li class="nav-item avatar dropdown">
+      <a class="nav-link  bg-dangesr" href="{%url 'my-profile' %}"
+        aria-haspopup="true" aria-expanded="false">
+        {% if user.profile.profile_pic %}
+
+        <img src="{{user.profile.profile_pic.url}}" 
+        class="rounded-circle z-depth-1 " id="nav-profile-image"
+          alt="avatar image">
+
+          <!-- <i class="fas fa-caret-down  black-text"></i> !-->
+
+
+        {% else %}
+
+        <div class="nav-no-profile-image float-left rounded-circle mr-lg-1
+        text-center">
+          <span id="nav-no-profile-image">
+            <i class="fa fa-user pt-md-1"></i></span>
+        <!-- </div> <i class="fas fa-caret-down  black-text"></i> -->
+
+        {% endif %}
+
+
+      </a>
+      
+
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link waves-effect waves-light"  href="{% url 'logout' %}">
+        <span class="black-texts mr-1 ml-4"
+        style="font-size: .8em;font-weight: bold !important;">
+        <!-- <img src="https://img.icons8.com/metro/52/000000/export.png"/> -->
+        Logout
+         <!-- <img src="https://img.icons8.com/ios-filled/50/000000/logout-rounded.png"/ 
+         style="background-color: white;border-radius: 50%;"> -->
+
+         <!-- <img src="https://img.icons8.com/wired/50/000000/logout-rounded.png"/> -->
+         
+<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="64" height="64"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M86.1075,6.7725c-43.61533,0 -79.12,35.50467 -79.12,79.12c0,43.61533 35.50467,79.12 79.12,79.12c23.3781,0 44.43061,-10.21499 58.89656,-26.3711c1.72575,-1.81717 2.32705,-4.42892 1.56965,-6.81778c-0.7574,-2.38887 -2.7537,-4.17703 -5.21122,-4.66789c-2.45752,-0.49085 -4.98757,0.39324 -6.60453,2.30786c-11.97388,13.37286 -29.26937,21.7889 -48.65047,21.7889c-36.17891,0 -65.36,-29.18109 -65.36,-65.36c0,-36.17891 29.18109,-65.36 65.36,-65.36c19.37733,0 36.67279,8.41529 48.65047,21.7889c1.61696,1.91462 4.14701,2.7987 6.60452,2.30785c2.45751,-0.49086 4.45382,-2.27902 5.21121,-4.66788c0.7574,-2.38886 0.1561,-5.0006 -1.56964,-6.81778c-14.46904,-16.15534 -35.52158,-26.37109 -58.89656,-26.37109zM133.9786,54.86531c-2.79841,0.00347 -5.31595,1.7014 -6.36771,4.29465c-1.05175,2.59324 -0.42817,5.56514 1.57724,7.51691l12.33562,12.33563h-62.51125c-2.48118,-0.03509 -4.78904,1.2685 -6.03987,3.41161c-1.25083,2.1431 -1.25083,4.79369 0,6.93679c1.25083,2.1431 3.55869,3.4467 6.03987,3.41161h62.51125l-12.33562,12.33563c-1.79734,1.72562 -2.52135,4.28808 -1.89282,6.69912c0.62853,2.41104 2.5114,4.29391 4.92245,4.92245c2.41104,0.62853 4.9735,-0.09548 6.69912,-1.89282l23.4686,-23.46859c1.71744,-1.30466 2.72377,-3.33912 2.71849,-5.49591c-0.00528,-2.15678 -1.02155,-4.1863 -2.74536,-5.48253l-23.44172,-23.44172c-1.29693,-1.33318 -3.07834,-2.08452 -4.93828,-2.08281z"></path></g></g></svg>
+         
+        </span> 
+      </a>
+    </li>
+
+
+
+  </ul>
+
+
+  {% else %}
+
+
+  <ul class="navbar-nav ml-auto nav-flex-icons ">
+
+    <li class="nav-item">
+      <a class="nav-link waves-effect waves-light"  href="{% url 'sign-up' %}">
+        <span class="black-texts mr-1 ml-4">
+
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+        width="50" height="50"
+        viewBox="0 0 172 172"
+        style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M86,21.5c-15.83216,0 -28.66667,12.8345 -28.66667,28.66667c0,15.83216 12.8345,28.66667 28.66667,28.66667c15.83216,0 28.66667,-12.8345 28.66667,-28.66667c0,-15.83216 -12.8345,-28.66667 -28.66667,-28.66667zM129,86c-23.65,0 -43,19.35 -43,43c0,23.65 19.35,43 43,43c23.65,0 43,-19.35 43,-43c0,-23.65 -19.35,-43 -43,-43zM79.19726,100.66927c-22.64667,1.87767 -57.69726,12.5354 -57.69726,31.91406v17.91667h54.37989c-2.69467,-6.6435 -4.21322,-13.889 -4.21322,-21.5c0,-10.32 2.7576,-19.96723 7.5306,-28.33073zM121.83333,107.5h14.33333v14.33333h14.33333v14.33333h-14.33333v14.33333h-14.33333v-14.33333h-14.33333v-14.33333h14.33333z"></path></g></g></svg>        
+      </span> 
+      <span class="font-weight-bold" style="font-size: .8em;">
+        Sign Up
+      </span>
+      </a>
+    </li>
+
+
+
+    <li class="nav-item">
+      <a class="nav-link waves-effect waves-light"  href="{% url 'login' %}">
+        <span class="black-texts mr-1 ml-4">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="50" height="50"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M86,0c-39.99,0 -73.59069,27.46983 -83.17253,64.5h14.80924c9.159,-29.0465 36.33545,-50.16667 68.36328,-50.16667c39.517,0 71.66667,32.14967 71.66667,71.66667c0,39.517 -32.14967,71.66667 -71.66667,71.66667c-32.02783,0 -59.20428,-21.12017 -68.36328,-50.16667h-14.80924c9.58183,37.03017 43.18253,64.5 83.17253,64.5c47.42183,0 86,-38.57817 86,-86c0,-47.42183 -38.57817,-86 -86,-86zM78.83333,57.33333v21.5h-78.83333v14.33333h78.83333v21.5l40.3125,-28.66667z"></path></g></g></svg> 
+      </span> 
+      <span class="font-weight-bold mr-5" style="font-size: .8em;">
+        Login
+      </span>
+      </a>
+    </li>
+
+
+  </ul>
+
+
+  {% endif %}
+
+</nav>
+
+
+<div class="col mobile-br" style="display: none;">
+	<br><br>
+</div>
+<!--/.Navbar -->
+
+
+
+  <nav class="navbar navbar-expand-md  fixed-bottom  bg-primarys z-depth-3" id="mobile-nav-bottom"
+   style="">
+
+
+
+   {% if user.is_authenticated %}
+
+   <div class="container bg-dangers" >
+     <ul class="navbar-nav bg-successs" id="nav-center">
+       <!-- ----------------------- HOME TAB ----------------------------- -->
+
+       <li class="nav-item active active mr-4 ml-2 pl-5 pr-5
+       {% if request.resolver_match.url_name == 'home' %}nav-background{% endif %}
+       nav-element-custom " data-title="HOME">
+           <span >
+             <!-- <i class="fa fa-home " aria-hidden="true"></i> -->
+             <a class="nav-link nav-link-custom" href="{% url 'home' %}">
+             <img src="https://img.icons8.com/windows/74/000000/home.png"/>
+             </a>
+
+           </span>
+         </a>
+       </li>
+
+
+       <!-- ------------------------ MY POSTS TAB----------------------           -->
+
+       <li class="nav-item  nav-element-custom mr-5 ml-5 pl-5 pr-5
+       {% if request.resolver_match.url_name == 'my-posts' %}nav-background{% endif %}"
+        data-title="MY POSTS">
+         <a class="nav-link nav-link-custom" href="{% url 'my-posts' %}">
+           <!-- <i class="fas fa-stream"></i> -->
+           <img src="https://img.icons8.com/small/74/000000/grid.png"/>
+         
+          </a>
+       </li>
+
+
+       <!-- ------------ COMMUNITY TAB ---------------           -->
+
+       <li class="nav-item  nav-element-custom mr-2 ml-4 pl-5 pr-5
+       {% if request.resolver_match.url_name == 'communities' %}nav-background{% endif %} "
+        data-title="COMMUNITY">
+         <a class="nav-link  nav-link-custom" href="{% url 'communities' %}">
+           <!-- <i class="fas fa-users"></i> -->
+           <!-- <img src="https://img.icons8.com/windows/64/000000/conference.png"/> -->
+           <img src="https://img.icons8.com/pastel-glyph/74/000000/groups.png"/>
+         </a>
+       </li>
+     </ul>
+   </div>
+
+
+   {% else %}
+
+
+   <div class="containerS bg-dangers " style="margin: auto;">
+    <ul class="navbar-nav ml-auto nav-flex-icons ">
+
+      <li class="nav-item bg-warnings pl-3 pr-4 mr-3 mb-1" id="hover-custom">
+        <a class="nav-link waves-effect waves-light"  href="{% url 'home' %}">
+          <span class="black-texts mr-1 ml-4">
+            <img src="https://img.icons8.com/windows/60/000000/home.png"/>
+        </span> 
+        <span class="black-text"
+        style="font-size: .7em;font-family: 'Jost', sans-serif;font-weight: 500;">
+          HOME
+        </span>
+        </a>
+      </li>
+  
+  
+  
+      <li class="nav-item bg-primarys pl-3 pr-4 mb-1" id="hover-custom">
+        <a class="nav-link waves-effect waves-light"  href="{% url 'communities' %}">
+          <span class="black-texts mr-1 ml-4 mb-2">
+            <img src="https://img.icons8.com/pastel-glyph/60/000000/groups.png"/>
+          </span> 
+          <span class="black-text"
+           style="font-size: .7em;font-family: 'Jost', sans-serif;font-weight: 500">
+            COMMUNITIES
+          </span>
+        </a>
+      </li>
+  
+  
+    </ul>
+  </div>
+
+   {% endif %}
+
+  </nav>
+
+
+
+  {% block content %}
+
+  {% endblock content %}
+
+</body>
+
+
+
+
+</html>

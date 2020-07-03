@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<!--Grid row-->
+
+
+<div class="wrapper mt-5">
+
+    <div class="profile-card js-profile-card">
+
+
+            <a href="#" data-toggle="modal" data-target="#modalLoginForm">
+
+                {% if user.profile.profile_pic %}
+                    <div class="text-center ">
+                        <img src="{{user.profile.profile_pic.url}}" 
+                        alt="profile card" class="z-depth-3 user-profile-image">
+                    </div>
+                {% else %}
+
+                    <div class="text-center user-profile-no-image z-depth-1">
+
+                            <span id="user-profile-no-image" class="mt-lg-5">
+                                <i class="fa fa-user" class="mt-lg-5"></i>
+                            </span>
+
+                    </div>
+
+                {% endif %}
+            </a>
+
+
+<!-- <br><br><br> -->
+
+<div class="col-lg-12 mb-5">
+<br>
+</div>
+
+        <div class="text-center profile-username font-weight-bold">
+            <div class="">@{{user}}
+            </div>
+
+        </div>
+        <div class="profile-card__cnt js-profile-cnt">
+            <div class="profile-card__name profile-user-first_name">{{user.first_name}}</div>
+
+            <div class="profile-card-inf profile-label-container">
+
+            <div class="profile-card-inf__item">
+                <div class="profile-card-inf__title profile-top-label" 
+                id="profile-top-label">{{created_communities}}</div>
+                <a href="{% url 'my-communities' %}" >
+                    <div class="profile-card-inf__txt profile-bottom-label"
+                    id="profile-bottom-label">
+                        Created Communities</div>
+                </a>   
+             </div>
+
+
+            <div class="profile-card-inf__item">
+                 <div class="profile-card-inf__title profile-top-label" 
+                 id="profile-top-label">{{my_posts.count}}</div>
+                 <span href="{% url 'my-posts' %}">
+                    <div class="profile-card-inf__txt profile-bottom-label"
+                    id="profile-bottom-label" >
+                        Posts</div>
+                 </span>
+            </div>
+
+            <div class="profile-card-inf__item">
+                <div class="profile-card-inf__title profile-top-label"
+                id="profile-top-label">{{following_communities}}</div>
+                    <a href="{% url 'following-communities' %}">
+                        <div class="profile-card-inf__txt profile-bottom-label"
+                        id="profile-bottom-label">
+                            Following Communities</div>
+                    </a>
+            </div>
+
+            </div>
+
+            <div class="profile-card-social">
+
+                <a href="" class="btn btn-black btn-rounded font-weight-bold edit-profile" data-toggle="modal"
+                    data-target="#modalRegisterForm">
+                    Edit Profile <i class="fa fa-pen"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% include 'users/_update-profile-details.html' %}
+
+{% include 'users/_update-profile-pic.html' %}
+
+
+<div class="other-posts-from-user" style="margin-top: 0%;">
+
+	<div class="col mb-4 col-md-12">
+        <p class="other-posts-header " style="margin-left: -2% !important;">
+            My Posts
+		</p>
+	</div>
+		<hr>
+</div>
+
+
+{% include 'posts/_my-posts.html' %}
+
+<div class="col mb-4 mobile-br" style="display: none;">
+    <br>
+</div>
+
+<!--Grid row-->
+<script>
+
+    var inputs = document.querySelectorAll('.file-input')
+
+    for (var i = 0, len = inputs.length; i < len; i++) {
+        customInput(inputs[i])
+    }
+
+    function customInput(el) {
+        const fileInput = el.querySelector('[type="file"]')
+        const label = el.querySelector('[data-js-label]')
+
+        fileInput.onchange =
+            fileInput.onmouseout = function () {
+                if (!fileInput.value) return
+
+                var value = fileInput.value.replace(/^.*[\\\/]/, '')
+                el.className += ' -chosen'
+                label.innerText = value
+            }
+    }
+
+
+    function set_profile_pic() {
+        document.querySelector(".profile-pic-btn-set").style.display = 'none'
+        document.querySelector("#profile-pic-form").style.display = 'block'
+    }
+
+
+    function cancel_set_profile_pic() {
+        document.querySelector("#profile-pic-form").style.display = 'none'
+        document.querySelector(".profile-pic-btn-set").style.display = 'inline'
+    }
+</script>
+
+{% endblock content %}

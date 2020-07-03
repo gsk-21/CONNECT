@@ -1,0 +1,117 @@
+{% load static %}
+
+{% load humanize %}
+
+{% load customfilter %}
+
+
+<div class="container   likes-container">
+<div class="row">
+    <div class="col-md-12 bg-dangers" style="margin: auto;margin-left: 0%;">
+        {% if user in post.likes.all %}
+        <a href="like" id="like-{{post.slug}}"class="like-btn" >
+            <i class="fas fa-heart" id="fa-like-{{post.slug}}"></i>
+        </a> 
+    {% else %}
+
+        <a href="like" id="like-{{post.slug}}"class="like-btn">
+            <i class="far fa-heart" id="fa-like-{{post.slug}}"></i>
+        </a> 
+    
+    {% endif %}
+
+
+
+        <span class="home-like-text" id="home-like-text-{{post.slug}}" style="margin: auto !important;">
+            {% if post.post_likes.count == 1 and  user in post.likes.all %}
+                {{"you liked this post"}}
+
+            {% elif post.post_likes.count == 1 and  user not in post.likes.all %}
+                {{"1 like"}}
+
+            {% elif post.post_likes.count > 1 and user in post.likes.all %}
+
+                you and {{ post.likes.all.count | sub }} 
+                other{{ post.likes.all.count | sub | pluralize}}
+                 liked this post
+
+            {% elif post.post_likes.count == 0 %}
+
+                {{"Be the first to like this post"}}
+
+            {% else %}
+
+                <span id="home-like-count-{{post.slug}}">{{post.likes.all.count | floatformat:"0"}}</span>
+                 people liked this post
+
+            {% endif %}
+        </span>
+    </div>
+</div>
+                
+</div>
+
+
+
+
+
+<script>
+
+$('#like-{{post.slug}}').click(function (event) {
+    event.preventDefault()
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                type: 'POST',
+                url: "{% url 'like' %}",
+                data: {
+                    'post_slug': "{{ post.slug }}",
+                },
+                success: LikePost,
+                dataType: 'html',
+            });
+
+            function LikePost(data, jqXHR) {
+                var data = $.parseJSON(data)
+                if (data['like']) {
+                    $('#fa-like-{{post.slug}}').removeClass("far fa-heart").addClass('fas fa-heart')
+                    //document.querySelector("#home-like-text").textContent = 
+
+
+                }
+                else
+                    {
+                    $('#fa-like-{{post.slug}}').removeClass("fas fa-heart").addClass('far fa-heart')
+                    //document.querySelector("#home-like-text").textContent = 
+                }
+
+                let like_text = document.querySelector("#home-like-text-{{post.slug}}")
+                let likes_count = data['likes_count']
+                let liked_by_user = data['liked_by_user']
+                if(liked_by_user && likes_count == 1){
+                    like_text.textContent = "you liked this post"
+                }
+                else if(liked_by_user==false && likes_count == 1){
+                    like_text.textContent = "1 like"
+                }
+
+                else if(liked_by_user == false && likes_count == 1){
+                    like_text.textContent = likes_count+" like"
+                }
+                else if(liked_by_user == false && likes_count > 1){
+                    like_text.textContent = likes_count+" people liked this post"
+                }
+                else if(liked_by_user == false && likes_count == 0){
+                    like_text.textContent = "Be the first to like this post"
+                }
+                else if(liked_by_user && likes_count == 2){
+                    like_text.textContent = "you and 1 other liked this post"
+                }
+                else if(liked_by_user && likes_count > 2){
+                    like_text.textContent = "you and " +Number(likes_count-1)+" others liked this post"
+                }
+
+            }
+        });
+
+
+</script>

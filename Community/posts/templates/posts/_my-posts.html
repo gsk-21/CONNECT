@@ -1,0 +1,92 @@
+<!-- <div class="row row-cols-1 row-cols-md-3 card-columns"> -->
+	<!-- <div class="containers font-weight-bold text-centers  community-list-header ">
+		{{ "Posts by you" | lower | capfirst | title }}
+		
+		<div class="containers" style="width: 10em;margin: auto;">
+			<hr>
+		</div>
+	</div> -->
+
+
+
+	<div class="user-profile-post-list">
+
+
+
+		<div class="card-columns mt-4" >
+			{% for post in my_posts %}
+			<div class="col lg-4 mb-1 my-posts-mb">
+		
+		
+				<div class="card h-100 hoverable ">
+					<!--Card image-->
+					<div class="view overlay">
+		
+						{% if post.post_pic %}
+						<img class="card-img-top users-post" src="{{post.post_pic.url}}" 
+						alt="Card image cap" >
+
+						{% endif %}
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<div class="mask rgba-white-slight"></div>
+						</a>
+					</div>
+		
+					<!--Card content-->
+					<div class="card-body view overlay"">
+
+
+						
+						{% if post.post_pic %}
+						<!--Title-->
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<p class="card-title user_posts_title" 
+							id="user_posts_title">{{post}}</p>
+						</a>
+						
+						{% if  post.message%}
+							 <p class="card-text user_posts_message" 
+							 id="user_posts_message">{{post.message | truncatewords:6}}	</p>
+						{% endif %}
+						
+						
+
+							
+
+						{% else %}
+
+												<!--Title-->
+						<a href="{% url 'post-detail' slug=post.slug %}">
+							<p class="card-title user_posts_no-pic-title" 
+							id="user_posts_no-pic-title">{{post}}</p>
+						</a>
+						
+						
+						{% if  post.message%}
+							<p class="card-text user_posts_no-pic-message"
+							id="user_posts_no-pic-message">
+								{{post.message | truncatewords:40}}
+							
+							</p>							
+						{% endif %}
+							
+						{% endif %}
+							
+
+
+					</div>
+		
+				</div>
+		
+		
+				<!-- Card -->
+			</div>
+		
+			{% endfor %}
+		
+		</div>
+</div>
+
+
+
+

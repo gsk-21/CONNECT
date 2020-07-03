@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-lg-3">
+
+	<div class="container " style="width: 75%;margin: auto;" id="create-head-full">
+		<div class="container" style="margin: auto;">
+			<p class="create-community-head" id="create-community-head">
+			CREATE YOUR COMMUNITY</p>
+		
+		</div>
+	
+	<hr><br>
+	<br>
+</div>
+	
+	
+	<form action="{% url 'create-community' %}"  method="post" enctype="multipart/form-data">
+	
+	{% csrf_token %}
+	
+		<div class="container bg-successs create-community-container" 
+		style="width: 70%; margin: auto;">
+	
+			<div class="row">
+		
+				<div class="col-md-12 col-lg-6" style="margin-top: -3%;">
+						
+					<div class="container">
+						<label for="image">
+							<input type="file" name="group_profile_pic" id="image" style="display:none;" 
+							onchange="preview()" />
+		
+							 <div class="hoverable " style="border-radius: 50%;">
+								<img src="" style="display: none;"
+								id="frame" class="card-img-top img-fluid community-creation-profile-image"
+								title="Choose Community Image">
+							</div> 
+		
+							<i class="fa fa-users community-creation-profile-icon hoverable"  
+							id="community-create-icon" title="Community Profile Picture"
+							aria-hidden="true" style=""></i>
+		
+						</label>
+					</div>
+		
+				</div>
+		
+		
+				<div class="col-md-12 col-lg-6" >
+		
+	
+	
+					<div class="md-form mb-6 md-12">
+		
+						<input type="text" id="orangeForm-name"  
+						placeholder="Community Name"
+						style="font-size: 1.2rem;color: black !important;"
+						class="form-control validate create-input"
+						name="group-name" required>
+						<!-- <label data-error="wrong" data-success="right"
+						 for="orangeForm-name" 
+						 id="create-community-label"
+						class="create-community-label">
+							COMMUNITY NAME</label> -->
+					</div>
+		
+					<div class="col-md-1"><br></div>
+	
+					<div class="md-form mb-6">
+		
+						<input type="text" id="orangeForm-name"
+						 placeholder="Community Description"
+						 style="font-size: 1.2rem;color: black !important;"
+						class="form-control validate create-input"
+						name="description" required>
+						<!-- <label data-error="wrong"
+						data-success="right" for="orangeForm-name"
+						id="create-community-label"
+						 class="create-community-label">
+							COMMUNITY DESCRIPTION</label> -->
+					</div>
+		
+	
+	
+					<div class="col-md-1"><br></div>
+					<div class="md-form mb-6">
+	
+						<div class="">
+							<button type="submit" id="create-community-btn"
+							class="btn btn-dark btn-rounded  btn-md create-community-btn">
+								CREATE COMMUNITY
+							</button>
+						</div>
+	
+					</div>
+	
+		
+				</div>
+		
+		
+			</div>
+		
+		</div>
+	
+	
+	
+	</form>
+	
+	
+
+</div>
+
+<div class="col mb-4 mobile-br" style="display: none;">
+<br><br>
+</div>
+
+<script>
+
+		function preview() {
+			frame.src = URL.createObjectURL(event.target.files[0]);
+			console.log(URL.createObjectURL(event.target.files[0]))
+
+			document.querySelector("#community-create-icon").style.display = 'none'
+			document.querySelector("#frame").style.display = 'block'
+			
+		}
+
+        window.addEventListener('load',function(){
+			let inputs = document.querySelectorAll(".form-control")
+			//document.querySelector("#orangeForm-name").value=''
+			for(i of inputs){
+				i.value = ''
+			}
+		})
+
+</script>
+
+{% endblock content %}

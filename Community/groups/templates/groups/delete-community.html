@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block content %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+<div class="container ">
+    
+    <div class="row alert delete-community-confirm">
+
+        <div class="col-md-12">
+            Do you want to 
+            
+            {% if community.posts.count %}
+
+            remove all the posts and   
+
+            {% endif %}
+                
+            delete this community?
+        </div>
+
+        <div class="col-md-12 delete-community-confirm-buttons">
+            <button type="submit" class="btn btn-danger font-weight-bold"> 
+                Delete</button>
+    
+    
+            <a href="{% url 'community-detail' community.slug %}"
+            class="btn btn-primary font-weight-bold">Cancel</a>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+</form>
+
+{% endblock %}
